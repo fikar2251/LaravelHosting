@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\File;
 class DevController extends Controller
 {
     public static function encrypt(Request $request)
@@ -23,5 +23,11 @@ class DevController extends Controller
         return response()->streamDownload(function()use($file_decrypt){
             echo $file_decrypt;
         },$name);
+    }
+    public function test()
+    {
+        File::link(
+            storage_path('app/public'), public_path('storage')
+        );
     }
 }

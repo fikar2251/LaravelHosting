@@ -93,3 +93,4 @@ Route::prefix('/')->middleware('auth')->name('pegawai.')->group(function(){
 Route::view('image','image');
 Route::post('/encrypt',[DevController::class,'encrypt']);
 Route::get('/decrypt/{path}',[DevController::class,'decrypt']);
+Route::get('/test', [DevController::class, 'test']);
