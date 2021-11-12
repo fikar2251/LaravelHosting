@@ -96,5 +96,6 @@ Route::prefix('/')->middleware('auth')->name('pegawai.')->group(function(){
     Route::resource('access', AccessController::class);
     Route::get('file/index/{id}', [ApiPegawaiController::class, 'FileIndex']);
     Route::get('/file/password/{id}/{password}',[ApiPegawaiController::class, 'FilePassword']);
+    Route::get('/filepegawai/{id}', [ApiPegawaiController::class, 'FilePegawaiIndex']);
 
 });

@@ -155,7 +155,7 @@
             serverSide: true,
             processing: true,
             destroy: true,
-            ajax: `/api/pegawai/filepegawai/${id}`,
+            ajax: `/filepegawai/${id}`,
             columns: [
                 {
                     data: 'file',

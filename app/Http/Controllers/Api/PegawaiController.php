@@ -128,7 +128,7 @@ class PegawaiController extends Controller
     {
         $query = FilePegawai::where('pegawai_id', $id)->get();
         return datatables()->of($query)->editColumn('file', function ($qr) {
-            return '<a target="_blank" href="' . asset('storage/' . $qr->file) . '" class="btn btn-sm btn-success">File</a>';
+            return '<form method="post" action="'.route('downloadorview', $qr->id).'"> '.csrf_field().' <button type="submit" class="btn btn-indigo"><i class="fas fa-folder-open"></i></button> </form>';
         })->editColumn('action', function ($qr) {
             return '<button class="btn btn-sm btn-danger" onclick="buttonfilepegawaidelete(this)" data-id="' . $qr->id . '">Delete</button>';
         })->editColumn('date', function ($qr) {
