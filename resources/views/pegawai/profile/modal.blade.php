@@ -14,7 +14,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tanggal_file">Tanggal</label>
-                        <input type="date" class="form-control" readonly name="tanggal_file" id="tanggal_file" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}">
+                        <input type="datetime" class="form-control" readonly name="tanggal_file" id="tanggal_file" value="{{ Carbon\Carbon::now()->format('Y-m-d H:i:s') }}">
                     </div>
                 </form>
             </div>

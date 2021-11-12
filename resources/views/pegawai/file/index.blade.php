@@ -41,7 +41,7 @@
                                     @if($data->password != null)
                                     <a href="#" onclick="ButtonPrompt(this)" data-id="{{ $data->id }}" class="btn btn-indigo"><i class="fa fa-lock"></i></a>
                                     @else
-                                    <a href="{{ asset('storage/'.$data->file) }}" class="btn btn-indigo"><i class="fas fa-folder-open"></i></a>
+                                    <a href="{{ route('downloadorview',$data->file) }}" class="btn btn-indigo"><i class="fas fa-folder-open"></i></a>
                                     @endif
                                     <a href="#" onclick="CommentPreview(this)" data-id="{{ $data->id }}" data-target="#modaldemo2" data-toggle="modal" class="btn btn-purple"><i class="fas fa-comment-dots"></i></a>
                                     <a href="#" onclick="AccessPreview(this)" data-id="{{ $data->id }}" data-target="#modaldemo3" data-toggle="modal" class="btn btn-warning"><i class="fas fa-universal-access"></i></a>
@@ -78,7 +78,7 @@
         $('#tablefilepegawai').DataTable({
             processing: true,
             serverSide: true,
-            ajax: `/api/pegawai/file/index/${id}`,
+            ajax: `/file/index/${id}`,
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
@@ -289,7 +289,7 @@
             confirmButtonText: 'Look up',
             showLoaderOnConfirm: true,
             preConfirm: (password) => {
-                return fetch(`/api/pegawai/file/password/${id}/${password}`)
+                return fetch(`/file/password/${id}/${password}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(response.statusText)
@@ -305,10 +305,9 @@
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = result.value
-                console.log(result)
                 Swal.fire({
-                    title: `${result.value}`
+                    title: `${result.value}`,
+                    showConfirmButton: false
                 })
             }
         })

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DevController;
 use App\Models\Access;
 use App\Models\Comment;
 use App\Models\Disposisi;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use DataTables;
 use Exception;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\ValidationException;
 
@@ -97,19 +99,25 @@ class PegawaiController extends Controller
             throw $error;
         }
         try {
-            
-            $name = $request->nama_file . '_' . $request->file('file')->getClientOriginalName();
-            $path = $request->file('file')->storeAs('/pegawai/file_pegawai', $name);
+            $file_encrypt = encrypt($request->file('file')->get());
+            $original_file_name = $request->file('file')->getClientOriginalName();
+            $fake = preg_replace('/\\.[^.\\s]{3,4}$/', '', $original_file_name);
+            $fake_file_name = rand() . '_' . Carbon::now()->format('Ymd') . '_' . $fake . '.rda';
+            $path_file = '/pegawai/file_pegawai/' . $fake_file_name;
+            Storage::put($path_file, $file_encrypt);
+
             FilePegawai::create([
                 'name' => $request->nama_file,
-                'file' => $path,
-                'date' => $request->tanggal_file . ' ' . Carbon::now()->format('H:i:s'),
+                'file' => $path_file,
+                'fake' => $fake_file_name,
+                'original' => $original_file_name,
+                'date' => Carbon::parse($request->tanggal_file)->format('Y-m-d H:i:s'),
                 'pegawai_id' => $id,
                 'aktifya' => 1
             ]);
-            return response()->json($path);
+            return response()->json($path_file);
         } catch (\Throwable $th) {
-            Storage::delete($path);
+            Storage::delete($path_file);
             $error = ValidationException::withMessages([
                 'file' => 'fails'
             ]);
@@ -150,8 +158,9 @@ class PegawaiController extends Controller
     {
         $file = FilePegawai::findOrFail($id);
         if ($password == $file->password) {
-            return response()->json(asset('storage/' . $file->file));
-        }
+            $form = '<form action="'.route('downloadorview',$file->id).'" method="post">'.csrf_field().'<button type="submit" class="btn btn-success">Download</button></form>';
+            return response()->json($form);
+        } 
         return response()->json(['error' => 'Wrong Password'], 401);
     }
     public function FileComment($id)
@@ -161,16 +170,16 @@ class PegawaiController extends Controller
             return $data->pegawai->nama;
         })->editColumn('timestamp', function ($data) {
             return Carbon::parse($data->created_at)->diffForHumans();
-        })->editColumn('foto', function($data){
-            return '<img class="img-fluid" width="50" src="'.asset('storage/'.$data->pegawai->foto).'">';
+        })->editColumn('foto', function ($data) {
+            return '<img class="img-fluid" width="50" src="' . asset('storage/' . $data->pegawai->foto) . '">';
         })->rawColumns(['foto'])->make(true);
     }
     public function FileAccess(Request $request)
     {
         $data = [];
-        $accesses = User::whereHas('roles',function($qr){
-            return $qr->where('name','pegawai');
-        })->where('name','like','%'.$request->q.'%')->get();
+        $accesses = User::whereHas('roles', function ($qr) {
+            return $qr->where('name', 'pegawai');
+        })->where('name', 'like', '%' . $request->q . '%')->get();
         foreach ($accesses as $row) {
             $data[] = ['id' => $row->id, 'text' => $row->name];
         }
@@ -185,7 +194,7 @@ class PegawaiController extends Controller
         return datatables()->of($query)->editColumn('file_name', function ($data) {
             return $data->name;
         })->editColumn('size_ekstension', function ($data) {
-            return number_format(Storage::size($data->file) / 1048576, 2) . 'MB | ' . File::extension($data->file);
+            return number_format(Storage::size($data->file) / 1048576, 2) . 'MB | ' . File::extension($data->original);
         })->editColumn('datetime', function ($data) {
             return Carbon::parse($data->date)->format('d F Y H:i:s');
         })->editColumn('pegawai', function ($data) {
@@ -193,7 +202,7 @@ class PegawaiController extends Controller
         })->editColumn('access', function ($data) {
             return $data->access;
         })->editColumn('action', function ($data) {
-            $type = $data->password != null ? '<a href="#" onclick="ButtonPrompt(this)" data-id="' . $data->id . '" class="btn btn-indigo"><i class="fa fa-lock"></i></a>' : '<a href="' . asset('storage/' . $data->file) . '" class="btn btn-indigo"><i class="fas fa-folder-open"></i></a>';
+            $type = $data->password != null ? '<a href="#" onclick="ButtonPrompt(this)" data-id="' . $data->id . '" class="btn btn-indigo"><i class="fa fa-lock"></i></a>' : '<form method="post" action="'.route('downloadorview', $data->id).'"> '.csrf_field().' <button type="submit" class="btn btn-indigo"><i class="fas fa-folder-open"></i></button> </form>';
             $button = '<div class="btn-group">' . $type . '<a href="#" onclick="CommentPreview(this)" data-id="' . $data->id . '" data-target="#modaldemo2" data-toggle="modal" class="btn btn-purple"><i class="fas fa-comment-dots"></i></a><a href="#" onclick="AccessPreview(this)" data-id="' . $data->id . '" data-target="#modaldemo3" data-toggle="modal" class="btn btn-warning"><i class="fas fa-universal-access"></i></a></div>';
             return $button;
         })->addIndexColumn()->make(true);
@@ -206,16 +215,24 @@ class PegawaiController extends Controller
                 'tanggal_file' => ['required'],
             ]);
             if ($validator->fails()) {
-                return response()->json($validator->getMessageBag());
+                return response()->json($validator->getMessageBag(),403);
             }
             $files = $request->file('file');
             foreach ($files as $file) {
+                
                 try {
-                    $name_file = Carbon::now()->format('YmdHis') . '_' . $file->getClientOriginalName();
-                    $path_file = $file->storeAs('pegawai/file_pegawai', $name_file);
+                    $file_encrypt = encrypt($file->get());
+                    $original_file_name = $file->getClientOriginalName();
+                    $fake = preg_replace('/\\.[^.\\s]{3,4}$/', '', $original_file_name);
+                    $fake_file_name = rand() . '_' . Carbon::now()->format('Ymd') . '_' . $fake . '.rda';
+                    $path_file = '/pegawai/file_pegawai/' . $fake_file_name;
+                    Storage::put($path_file, $file_encrypt);
+
                     FilePegawai::create([
                         'name' => $request->nama_file,
                         'file' => $path_file,
+                        'fake' => $fake_file_name,
+                        'original' => $original_file_name,
                         'date' => Carbon::parse($request->tanggal_file)->format('Y-m-d H:i:s'),
                         'pegawai_id' => $request->pegawai_id,
                         'aktifya' => 1,
@@ -255,27 +272,27 @@ class PegawaiController extends Controller
     public function FileAccessIndex($id)
     {
         $query = Access::where('file_pegawai_id', $id)->get();
-        return datatables()->of($query)->editColumn('pegawai',function($qr){
+        return datatables()->of($query)->editColumn('pegawai', function ($qr) {
             return $qr->user->name;
         })->addIndexColumn()->make(true);
     }
     public function FileAccessStore(Request $request)
     {
-        try{
+        try {
             Access::where('file_pegawai_id', $request->file_id)->delete();
-            FilePegawai::find($request->file_id)->update(['access'=>'public']);
-            if($request->access){
+            FilePegawai::find($request->file_id)->update(['access' => 'public']);
+            if ($request->access) {
                 foreach ($request->access as $user_id) {
                     Access::create([
                         'file_pegawai_id' => $request->file_id,
                         'user_id' => $user_id
                     ]);
                 }
-                FilePegawai::find($request->file_id)->update(['access'=>'private']);
+                FilePegawai::find($request->file_id)->update(['access' => 'private']);
             }
             return response()->json($request->all());
-        }catch(Exception $error){
-            return response()->json(['error'=>$error->getMessage()],500);
+        } catch (Exception $error) {
+            return response()->json(['error' => $error->getMessage()], 500);
         }
     }
 }

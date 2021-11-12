@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\StatusPernikahanController;
 use App\Http\Controllers\Admin\SuratKeluarController;
 use App\Http\Controllers\Admin\SuratMasukController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Api\PegawaiController as ApiPegawaiController;
 use App\Http\Controllers\DevController;
 use App\Http\Controllers\Pegawai\AccessController;
 use App\Http\Controllers\Pegawai\FileController;
@@ -48,6 +49,10 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+Route::middleware('auth')->group(function(){
+    Route::post('/DownloadOrView/{id}', [DevController::class, 'DownloadOrView'])->name('downloadorview');
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -89,8 +94,7 @@ Route::prefix('/')->middleware('auth')->name('pegawai.')->group(function(){
     Route::get('/file/delete/{id}', [FileController::class, 'delete'])->name('file.delete');
     Route::resource('file',FileController::class);
     Route::resource('access', AccessController::class);
+    Route::get('file/index/{id}', [ApiPegawaiController::class, 'FileIndex']);
+    Route::get('/file/password/{id}/{password}',[ApiPegawaiController::class, 'FilePassword']);
+
 });
-Route::view('image','image');
-Route::post('/encrypt',[DevController::class,'encrypt']);
-Route::get('/decrypt/{path}',[DevController::class,'decrypt']);
-Route::get('/test', [DevController::class, 'test']);
