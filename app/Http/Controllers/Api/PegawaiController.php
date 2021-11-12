@@ -189,7 +189,7 @@ class PegawaiController extends Controller
     {
         $query = FilePegawai::orderBy('created_at', 'desc')->whereHas('access', function ($qr) use ($id) {
             return $qr->where('user_id', Pegawai::find($id)->user->id);
-        })->orWhere('access', 'public')->get();
+        })->orWhere('access', 'public')->orWhere('pegawai_id',$id)->get();
 
         return datatables()->of($query)->editColumn('file_name', function ($data) {
             return $data->name;
@@ -201,9 +201,10 @@ class PegawaiController extends Controller
             return $data->pegawai->nama;
         })->editColumn('access', function ($data) {
             return $data->access;
-        })->editColumn('action', function ($data) {
+        })->editColumn('action', function ($data) use($id) {
+            $access = $data->pegawai_id == $id ? '<a href="#" onclick="AccessPreview(this)" data-id="' . $data->id . '" data-target="#modaldemo3" data-toggle="modal" class="btn btn-warning"><i class="fas fa-universal-access"></i></a>' : '<button class="btn btn-warning"><i class="fa fa-lock"></i></button>';
             $type = $data->password != null ? '<a href="#" onclick="ButtonPrompt(this)" data-id="' . $data->id . '" class="btn btn-indigo"><i class="fa fa-lock"></i></a>' : '<form method="post" action="'.route('downloadorview', $data->id).'"> '.csrf_field().' <button type="submit" class="btn btn-indigo"><i class="fas fa-folder-open"></i></button> </form>';
-            $button = '<div class="btn-group">' . $type . '<a href="#" onclick="CommentPreview(this)" data-id="' . $data->id . '" data-target="#modaldemo2" data-toggle="modal" class="btn btn-purple"><i class="fas fa-comment-dots"></i></a><a href="#" onclick="AccessPreview(this)" data-id="' . $data->id . '" data-target="#modaldemo3" data-toggle="modal" class="btn btn-warning"><i class="fas fa-universal-access"></i></a></div>';
+            $button = '<div class="btn-group">' . $type . '<a href="#" onclick="CommentPreview(this)" data-id="' . $data->id . '" data-target="#modaldemo2" data-toggle="modal" class="btn btn-purple"><i class="fas fa-comment-dots"></i></a>'.$access.'</div>';
             return $button;
         })->addIndexColumn()->make(true);
     }
