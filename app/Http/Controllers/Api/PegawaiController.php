@@ -128,7 +128,7 @@ class PegawaiController extends Controller
     {
         $query = FilePegawai::where('pegawai_id', $id)->get();
         return datatables()->of($query)->editColumn('file', function ($qr) {
-            return '<form method="post" action="'.route('downloadorview', $qr->id).'"> '.csrf_field().' <button type="submit" class="btn btn-indigo"><i class="fas fa-folder-open"></i></button> </form>';
+            return '<form method="post" action="' . route('downloadorview', $qr->id) . '"> ' . csrf_field() . ' <button type="submit" class="btn btn-indigo"><i class="fas fa-folder-open"></i></button> </form>';
         })->editColumn('action', function ($qr) {
             return '<button class="btn btn-sm btn-danger" onclick="buttonfilepegawaidelete(this)" data-id="' . $qr->id . '">Delete</button>';
         })->editColumn('date', function ($qr) {
@@ -158,9 +158,9 @@ class PegawaiController extends Controller
     {
         $file = FilePegawai::findOrFail($id);
         if ($password == $file->password) {
-            $form = '<form action="'.route('downloadorview',$file->id).'" method="post">'.csrf_field().'<button type="submit" class="btn btn-success">Download</button></form>';
+            $form = '<form action="' . route('downloadorview', $file->id) . '" method="post">' . csrf_field() . '<button type="submit" class="btn btn-success">Download</button></form>';
             return response()->json($form);
-        } 
+        }
         return response()->json(['error' => 'Wrong Password'], 401);
     }
     public function FileComment($id)
@@ -187,9 +187,12 @@ class PegawaiController extends Controller
     }
     public function FileIndex($id)
     {
-        $query = FilePegawai::orderBy('created_at', 'desc')->whereHas('access', function ($qr) use ($id) {
-            return $qr->where('user_id', Pegawai::find($id)->user->id);
-        })->orWhere('access', 'public')->orWhere('pegawai_id',$id)->get();
+        $query = FilePegawai::where('access','public')->whereHas('pegawai', function ($qr) use ($id) {
+            return $qr->where('unit_id', Pegawai::find($id)->unit_id);
+        })->orWhereHas('access', function ($qr) use ($id) {
+            return $qr->where('user_id', Pegawai::find($id)->user_id);
+        })->orWhere('pegawai_id',$id)->orderBy('created_at', 'desc')->get();
+
 
         return datatables()->of($query)->editColumn('file_name', function ($data) {
             return $data->name;
@@ -201,10 +204,10 @@ class PegawaiController extends Controller
             return $data->pegawai->nama;
         })->editColumn('access', function ($data) {
             return $data->access;
-        })->editColumn('action', function ($data) use($id) {
+        })->editColumn('action', function ($data) use ($id) {
             $access = $data->pegawai_id == $id ? '<a href="#" onclick="AccessPreview(this)" data-id="' . $data->id . '" data-target="#modaldemo3" data-toggle="modal" class="btn btn-warning"><i class="fas fa-universal-access"></i></a>' : '<button class="btn btn-warning"><i class="fa fa-lock"></i></button>';
-            $type = $data->password != null ? '<a href="#" onclick="ButtonPrompt(this)" data-id="' . $data->id . '" class="btn btn-indigo"><i class="fa fa-lock"></i></a>' : '<form method="post" action="'.route('downloadorview', $data->id).'"> '.csrf_field().' <button type="submit" class="btn btn-indigo"><i class="fas fa-folder-open"></i></button> </form>';
-            $button = '<div class="btn-group">' . $type . '<a href="#" onclick="CommentPreview(this)" data-id="' . $data->id . '" data-target="#modaldemo2" data-toggle="modal" class="btn btn-purple"><i class="fas fa-comment-dots"></i></a>'.$access.'</div>';
+            $type = $data->password != null ? '<a href="#" onclick="ButtonPrompt(this)" data-id="' . $data->id . '" class="btn btn-indigo"><i class="fa fa-lock"></i></a>' : '<form method="post" action="' . route('downloadorview', $data->id) . '"> ' . csrf_field() . ' <button type="submit" class="btn btn-indigo"><i class="fas fa-folder-open"></i></button> </form>';
+            $button = '<div class="btn-group">' . $type . '<a href="#" onclick="CommentPreview(this)" data-id="' . $data->id . '" data-target="#modaldemo2" data-toggle="modal" class="btn btn-purple"><i class="fas fa-comment-dots"></i></a>' . $access . '</div>';
             return $button;
         })->addIndexColumn()->make(true);
     }
@@ -216,11 +219,11 @@ class PegawaiController extends Controller
                 'tanggal_file' => ['required'],
             ]);
             if ($validator->fails()) {
-                return response()->json($validator->getMessageBag(),403);
+                return response()->json($validator->getMessageBag(), 403);
             }
             $files = $request->file('file');
             foreach ($files as $file) {
-                
+
                 try {
                     $file_encrypt = encrypt($file->get());
                     $original_file_name = $file->getClientOriginalName();

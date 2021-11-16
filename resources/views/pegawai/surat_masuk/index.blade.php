@@ -5,6 +5,9 @@
 <li class="breadcrumb-item active">Surat</li>
 @endpush
 @section('content')
+<div class="d-flex justify-content-end">
+    {{ $surat->links() }}
+</div>
 <div class="row">
     <div class="col-md-12">
         <div aria-multiselectable="true" class="accordion accordion-primary" id="accordion2" role="tablist">
@@ -126,6 +129,5 @@
             @endforeach
         </div><!-- accordion -->
     </div>
-    {{ $surat->links() }}
 </div>
 @stop

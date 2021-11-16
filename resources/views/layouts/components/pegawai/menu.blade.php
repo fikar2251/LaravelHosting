@@ -32,9 +32,11 @@
         <li>
             <h3>Surat</h3>
         </li>
+        @auth
         <li>
-            <a class="side-menu__item" href="{{ route('pegawai.surat_masuk.index') }}"><i class="side-menu__icon" data-eva="email-outline"></i><span class="side-menu__label">Surat Masuk</span></a>
+            <a class="side-menu__item" href="{{ route('pegawai.surat_masuk.index') }}"><i class="side-menu__icon" data-eva="email-outline"></i><span class="side-menu__label">Surat Masuk</span><span class="badge badge-pill badge-info">{{App\Models\Disposisi::where('pegawai_id',auth()->user()->pegawai->id)->where('is_read', 0)->count()}}</span></a>
         </li>
+        @endauth
         <li>
             <h3>Document</h3>
         </li>

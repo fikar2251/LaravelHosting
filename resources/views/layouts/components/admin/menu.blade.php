@@ -9,6 +9,7 @@
             <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon" data-eva="file-text-outline"></i><span class="side-menu__label">Master</span><i class="angle fe fe-chevron-down"></i></a>
             <ul class="slide-menu">
                 <li class="{{ request()->is('admin/master/pegawai*') ? 'active' : '' }}"><a class="slide-item" href="{{ route('admin.pegawai.index') }}">Pegawai</a></li>
+                <li class="{{ request()->is('admin/master/struktur*') ? 'active' : '' }}"><a class="slide-item" href="{{ route('admin.struktur.index') }}">Struktur Organisasi</a></li>
                 <li class="{{ request()->is('admin/master/jabatan*') ? 'active' : '' }}"><a class="slide-item" href="{{ route('admin.jabatan.index') }}">Jabatan</a></li>
                 <li class="{{ request()->is('admin/master/agama*') ? 'active' : '' }}"><a class="slide-item" href="{{ route('admin.agama.index') }}">Agama</a></li>
                 <li class="{{ request()->is('admin/master/dokumen*') ? 'active' : '' }}"><a class="slide-item" href="{{ route('admin.dokumen.index') }}">Dokumen</a></li>
@@ -16,6 +17,7 @@
                 <li class="{{ request()->is('admin/master/pendidikan*') ? 'active' : '' }}"><a class="slide-item" href="{{ route('admin.pendidikan.index') }}">Pendidikan</a></li>
                 <li class="{{ request()->is('admin/master/golongan*') ? 'active' : '' }}"><a class="slide-item" href="{{ route('admin.golongan.index') }}">Golongan</a></li>
                 <li class="{{ request()->is('admin/master/keahlian*') ? 'active' : '' }}"><a class="slide-item" href="{{ route('admin.keahlian.index') }}">Keahlian</a></li>
+                <li class="{{ request()->is('admin/master/unit*') ? 'active' : '' }}"><a class="slide-item" href="{{ route('admin.unit.index') }}">Unit</a></li>
             </ul>
         </li>
         <li class="slide">

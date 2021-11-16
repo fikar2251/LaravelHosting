@@ -21,8 +21,10 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StatusPernikahanController;
+use App\Http\Controllers\Admin\StrukturOrganisasiController;
 use App\Http\Controllers\Admin\SuratKeluarController;
 use App\Http\Controllers\Admin\SuratMasukController;
+use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Api\PegawaiController as ApiPegawaiController;
 use App\Http\Controllers\DevController;
@@ -52,6 +54,8 @@ Auth::routes();
 
 Route::middleware('auth')->group(function(){
     Route::post('/DownloadOrView/{id}', [DevController::class, 'DownloadOrView'])->name('downloadorview');
+    Route::post('/surat_masuk/laporan',[DevController::class, 'SuratMasukLaporan'])->name('surat_masuk.laporan');\
+    Route::post('/surat_keluar/laporan',[DevController::class, 'SuratKeluarLaporan'])->name('surat_keluar.laporan');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -72,6 +76,8 @@ Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function () {
         Route::resource('pendidikan', PendidikanController::class);
         Route::resource('golongan', GolonganController::class);
         Route::resource('keahlian', KeahlianController::class);
+        Route::resource('unit', UnitController::class);
+        Route::resource('struktur', StrukturOrganisasiController::class);
     });
     Route::resource('user', UserController::class);
     Route::resource('user_backup', BackUpController::class);

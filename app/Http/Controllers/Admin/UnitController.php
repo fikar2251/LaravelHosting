@@ -1,17 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Pegawai;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Disposisi;
-use App\Models\Pegawai;
-use App\Models\Response;
-use App\Models\SuratMasuk;
-use Carbon\Carbon;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class SuratMasukController extends Controller
+class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,15 +16,9 @@ class SuratMasukController extends Controller
      */
     public function index()
     {
-        Disposisi::where('pegawai_id',auth()->user()->pegawai->id)->update(['is_read'=>1]);
-        $pegawai = Pegawai::findOrFail(auth()->user()->pegawai->id);
-        $id = auth()->user()->pegawai->id;
-        $surat = SuratMasuk::whereHas('disposisi', function ($data) use ($id) {
-            return $data->where('pegawai_id', $id);
-        })->orderBy('created_at', 'desc')->paginate(2);
-        return view('pegawai.surat_masuk.index', [
-            'surat' => $surat,
-            'pegawai' => $pegawai
+        $units = Unit::get();
+        return view('admin.unit.index',[
+            'units' => $units
         ]);
     }
 
@@ -39,7 +29,10 @@ class SuratMasukController extends Controller
      */
     public function create()
     {
-        //
+        $unit = new Unit();
+        return view('admin.unit.create',[
+            'unit' => $unit
+        ]);
     }
 
     /**
@@ -50,16 +43,13 @@ class SuratMasukController extends Controller
      */
     public function store(Request $request)
     {
-        $attr = $this->validate($request, [
-            'pegawai_id' => 'required',
-            'disposisi_id' => 'required',
-            'response' => 'required'
+        $attr = $this->validate($request,[
+            'nama' => 'required'
         ]);
-        Response::create([
-            'response' => $attr['response'],
-            'disposisi_id' => $attr['disposisi_id'],
-            'pegawai_id' => $attr['pegawai_id']
-        ]);
+
+        Unit::create($attr);
+
+        Alert::success('Success', 'Success Create Unit');
         return back();
     }
 
@@ -82,7 +72,10 @@ class SuratMasukController extends Controller
      */
     public function edit($id)
     {
-        //
+        $unit = Unit::findOrFail($id);
+        return view('admin.unit.edit',[
+            'unit' => $unit
+        ]);
     }
 
     /**
@@ -94,7 +87,15 @@ class SuratMasukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $attr = $this->validate($request,[
+            'nama' => 'required'
+        ]);
+
+        Unit::findOrFail($id)->update($attr);
+        Alert::success('Success', 'Success Update Unit');
+
+        return back();
+
     }
 
     /**
@@ -105,6 +106,13 @@ class SuratMasukController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            Unit::findOrFail($id)->delete();
+            Alert::success('Success','Success Delete Unit');
+            return back();
+        } catch (\Throwable $th) {
+            Alert::error('Error',$th->getMessage());
+            return back();
+        }
     }
 }

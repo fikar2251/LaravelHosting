@@ -76,7 +76,11 @@
         <div class="col-lg-3 d-block mx-auto">
             <div class="card">
                 <div class="card-body">
+                    @if(App\Models\Setting::first())
                     <img src="{{ asset('storage/'.App\Models\Setting::first()->logo) }}" class="mb-3" alt="Logo">
+                    @else
+                    <img src="{{ asset('assets/img/brand/icon-1.png') }}" class="mb-3" alt="">
+                    @endif
                     <h4>Please sign in to continue</h4>
                     <form method="post" action="{{ route('login') }}" class="text-left mt-3">
                         @csrf

@@ -164,6 +164,68 @@
             @enderror
         </div>
     </div>
+    
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="unit_id">Unit</label>
+            <select name="unit_id" id="unit_id" class="form-control @error('unit_id') is-invalid @enderror">
+                @foreach($unit as $row)
+                <option @if($pegawai->unit_id ?? old('unit_id') == $row->id) selected @endif value="{{ $row->id }}">{{ $row->nama }}</option>
+                @endforeach
+            </select>
+            @error('unit_id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="organisasi_id">Organisasi</label>
+            <select name="organisasi_id" id="organisasi_id" class="form-control @error('organisasi_id') is-invalid @enderror">
+                @foreach($organisasi as $row)
+                <option @if($pegawai->organisasi_id ?? old('organisasi_id') == $row->id) selected @endif value="{{ $row->id }}">{{ $row->name }} | {{ $row->parent_struktur->name }}</option>
+                @endforeach
+            </select>
+            @error('organisasi_id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="golongan_id">Golongan</label>
+            <select name="golongan_id" id="golongan_id" class="form-control @error('golongan_id') is-invalid @enderror">
+                @foreach($golongan as $row)
+                <option @if($pegawai->golongan_id ?? old('golongan_id') == $row->id) selected @endif value="{{ $row->id }}">{{ $row->nama }} - {{ $row->pangkat }} - {{ $row->ruang }}</option>
+                @endforeach
+            </select>
+            @error('golongan_id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="pendidikan_id">Pendidikan</label>
+            <select name="pendidikan_id" id="pendidikan_id" class="form-control @error('pendidikan_id') is-invalid @enderror">
+                @foreach($pendidikan as $row)
+                <option @if($pegawai->pendidikan_id ?? old('pendidikan_id') == $row->id) selected @endif value="{{ $row->id }}">{{ $row->nama }}</option>
+                @endforeach
+            </select>
+            @error('pendidikan_id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-4">

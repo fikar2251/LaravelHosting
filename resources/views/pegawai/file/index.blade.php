@@ -10,8 +10,9 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between">
                 <a href="#" data-target="#modaldemo1" data-toggle="modal" class="btn btn-primary">Add File</a>
+                <button type="button" class="btn btn-danger mt-1 mb-1">Document Control {{ $pegawai->unit->nama }}</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

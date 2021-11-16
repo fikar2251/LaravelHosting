@@ -34,6 +34,10 @@ class Pegawai extends Model
     {
         return $this->belongsTo(StatusPernikahan::class, 'status_perkawinan_id');
     }
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
     public function applies()
     {
         return $this->hasMany(Apply::class);

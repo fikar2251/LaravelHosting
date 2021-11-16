@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\FilePegawai;
+use App\Models\SuratKeluar;
+use App\Models\SuratMasuk;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -52,5 +54,33 @@ class DevController extends Controller
             Alert::error('Error',$error->getMessage());
             return back();
         }
+    }
+    public function SuratMasukLaporan(Request $request)
+    {
+        $this->validate($request,[
+            'from' => 'required',
+            'to' => 'required'
+        ]);
+
+        $surat_masuk = SuratMasuk::whereBetween('tanggal', [$request->from,$request->to])->get();
+        return view('admin.surat_masuk.laporan',[
+            'surat_masuks' => $surat_masuk,
+            'from' => $request->from,
+            'to' => $request->to
+        ]);
+    }
+    public function SuratKeluarLaporan(Request $request)
+    {
+        $this->validate($request,[
+            'from' => 'required',
+            'to' => 'required'
+        ]);
+
+        $surat_keluar = SuratKeluar::whereBetween('tanggal', [$request->from,$request->to])->get();
+        return view('admin.surat_keluar.laporan',[
+            'surat_keluars' => $surat_keluar,
+            'from' => $request->from,
+            'to' => $request->to
+        ]);
     }
 }

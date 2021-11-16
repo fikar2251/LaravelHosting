@@ -12,6 +12,24 @@
                 <a href="{{ route('admin.surat_masuk.create') }}" class="btn btn-sm btn-primary">Create New</a>
             </div>
             <div class="card-body">
+                <form action="{{ route('surat_masuk.laporan') }}" method="post">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="date" name="from" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="date" name="to" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </form>
                 <div class="table-responsive">
                     <table class="table table-striped" id="datatable">
                         <thead>

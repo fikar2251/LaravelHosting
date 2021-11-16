@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Disposisi;
 use App\Models\FilePegawai;
 use App\Models\Pegawai;
 use App\Models\SuratKeluar;
@@ -32,6 +33,8 @@ class HomeController extends Controller
             $surat_keluar = SuratKeluar::get()->count();
             $pegawai = Pegawai::get()->count();
             $dokumen = FilePegawai::get()->count();
+            
+            
             return view('home', [
                 'surat_masuk' => $surat_masuk,
                 'surat_keluar' => $surat_keluar,

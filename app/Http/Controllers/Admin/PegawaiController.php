@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agama;
+use App\Models\ChildStruktur;
 use App\Models\Golongan;
 use App\Models\Jabatan;
 use App\Models\Pegawai;
 use App\Models\Pendidikan;
 use App\Models\StatusPernikahan;
+use App\Models\Unit;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -48,7 +50,9 @@ class PegawaiController extends Controller
             'golongan' => Golongan::get(),
             'jabatan' => Jabatan::get(),
             'pendidikan' => Pendidikan::get(),
-            'golongan' => Golongan::get()
+            'golongan' => Golongan::get(),
+            'unit' => Unit::get(),
+            'organisasi' => ChildStruktur::get()
         ]);
     }
 
@@ -109,8 +113,10 @@ class PegawaiController extends Controller
                 "status_perkawinan_id" => $request->status_perkawinan_id,
                 "agama_id" => $request->agama_id,
                 "jabatan_id" => $request->jabatan_id,
-                'pendidikan_id' => 1,
-                'golongan_id' => 1,
+                'pendidikan_id' => $request->pendidikan_id,
+                'golongan_id' => $request->golongan_id,
+                'unit_id' => $request->unit_id,
+                'organisasi_id' => $request->organisasi_id,
                 "foto" => $path,
                 "facebook" => $request->facebook,
                 "instagram" => $request->instagram,
@@ -161,7 +167,9 @@ class PegawaiController extends Controller
             'golongan' => Golongan::get(),
             'jabatan' => Jabatan::get(),
             'pendidikan' => Pendidikan::get(),
-            'golongan' => Golongan::get()
+            'golongan' => Golongan::get(),
+            'unit' => Unit::get(),
+            'organisasi' => ChildStruktur::get()
         ]);
     }
 
@@ -238,8 +246,10 @@ class PegawaiController extends Controller
                 "status_perkawinan_id" => $request->status_perkawinan_id,
                 "agama_id" => $request->agama_id,
                 "jabatan_id" => $request->jabatan_id,
-                'pendidikan_id' => 1,
-                'golongan_id' => 1,
+                'pendidikan_id' => $request->pendidikan_id,
+                'golongan_id' => $request->golongan_id,
+                'unit_id' => $request->unit_id,
+                'organisasi_id' => $request->organisasi_id,
                 "facebook" => $request->facebook,
                 "instagram" => $request->instagram,
                 "tmt" => $request->tmt,

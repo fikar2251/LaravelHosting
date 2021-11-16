@@ -22,7 +22,11 @@ class FileController extends Controller
     public function index()
     {
         $user = User::get();
-        $file = FilePegawai::orderBy('created_at', 'desc')->whereHas('access',function($qr){ return $qr->where('user_id', auth()->user()->id);  })->orWhere('pegawai_id',auth()->user()->pegawai->id)->get();
+        $file = FilePegawai::whereHas('pegawai', function ($qr) {
+            return $qr->where('unit_id', auth()->user()->pegawai->unit_id);
+        })->orWhereHas('access', function ($qr) {
+            return $qr->where('user_id', auth()->user()->pegawai->user_id);
+        })->get();
         $pegawai = Pegawai::findOrFail(auth()->user()->pegawai->id);
         return view('pegawai.file.index', [
             'pegawai' => $pegawai,

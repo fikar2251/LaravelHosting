@@ -6,7 +6,34 @@
 @endpush
 @section('content')
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <span class="badge badge-warning">{{ $surat_masuk->nomor }}</span>
+                <span class="badge badge-success">{{ $surat_masuk->asal }}</span>
+            </div>
+            <div class="card-body">
+                <table cellpadding="5">
+                    <tr>
+                        <th>Ringkas</th>
+                        <th>:</th>
+                        <th>{{ $surat_masuk->ringkas }}</th>
+                    </tr>
+                    <tr>
+                        <th>Keterangan</th>
+                        <th>:</th>
+                        <th>{{ $surat_masuk->keterangan }}</th>
+                    </tr>
+                    <tr>
+                        <th>File</th>
+                        <th>:</th>
+                        <th><a href="{{ asset('storage/'.$surat_masuk->file) }}" class="btn btn-sm btn-purple">File</a></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -27,7 +54,7 @@
                                 <td>{{ $data->tujuan }}</td>
                                 <td>{{ $data->isi }}</td>
                                 <td>{{ $data->batas_waktu }} / {{ $data->tipe }}</td>
-                                <td><a class="btn btn-info" data-target="#modaldemo1" data-id="{{ $data->id }}" onclick="ResponsePreview(this)" data-toggle="modal">Response</a></td>
+                                <td><a class="btn btn-sm btn-info" data-target="#modaldemo1" data-id="{{ $data->id }}" onclick="ResponsePreview(this)" data-toggle="modal">Response</a></td>
                                 <!-- BASIC MODAL -->
 
                             </tr>
