@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AgamaController;
 use App\Http\Controllers\Admin\BackUpController;
 use App\Http\Controllers\Admin\BackUpDatabaseController;
+use App\Http\Controllers\Admin\CutiController;
 use App\Http\Controllers\Admin\DisposisiController;
 use App\Http\Controllers\Admin\DisposisiSuratKeluarController;
 use App\Http\Controllers\Admin\DisposisiSuratMasukController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\DokumenController;
 use App\Http\Controllers\Admin\GolonganController;
 use App\Http\Controllers\Admin\InformasiController;
 use App\Http\Controllers\Admin\JabatanController;
+use App\Http\Controllers\Admin\KategoriCutiControlller;
 use App\Http\Controllers\Admin\KategoriInformasiController;
 use App\Http\Controllers\Admin\KeahlianController;
 use App\Http\Controllers\Admin\KenaikanBerkalaController;
@@ -29,6 +31,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Api\PegawaiController as ApiPegawaiController;
 use App\Http\Controllers\DevController;
 use App\Http\Controllers\Pegawai\AccessController;
+use App\Http\Controllers\Pegawai\CutiController as PegawaiCutiController;
 use App\Http\Controllers\Pegawai\FileController;
 use App\Http\Controllers\Pegawai\ProfileController;
 use App\Http\Controllers\Pegawai\SuratMasukController as PegawaiSuratMasukController;
@@ -92,6 +95,8 @@ Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function () {
     Route::resource('surat_keluar', SuratKeluarController::class);
     Route::get('disposisicreate/{id}',[DisposisiController::class,'createBySuratMasuk'])->name('disposisi.create.surat_masuk');
     Route::resource('disposisi',DisposisiController::class);
+    Route::resource('kategori_cuti',KategoriCutiControlller::class);
+    Route::resource('cuti',CutiController::class);
 });
 
 Route::prefix('/')->middleware('auth')->name('pegawai.')->group(function(){
@@ -103,5 +108,5 @@ Route::prefix('/')->middleware('auth')->name('pegawai.')->group(function(){
     Route::get('file/index/{id}', [ApiPegawaiController::class, 'FileIndex']);
     Route::get('/file/password/{id}/{password}',[ApiPegawaiController::class, 'FilePassword']);
     Route::get('/filepegawai/{id}', [ApiPegawaiController::class, 'FilePegawaiIndex']);
-
+    Route::resource('cuti',PegawaiCutiController::class);
 });

@@ -24,10 +24,10 @@
             <h3>Kenaikan</h3>
         </li>
         <li>
-            <a class="side-menu__item" href="#"><i class="side-menu__icon" data-eva="cube-outline"></i><span class="side-menu__label">Kenaikan Berkala</span></a>
+            <a class="side-menu__item" href="#"><i class="side-menu__icon" data-eva="grid-outline"></i><span class="side-menu__label">Kenaikan Berkala</span></a>
         </li>
         <li>
-            <a class="side-menu__item" href="#"><i class="side-menu__icon" data-eva="email-outline"></i><span class="side-menu__label">Kenaikan Pangkat</span></a>
+            <a class="side-menu__item" href="#"><i class="side-menu__icon" data-eva="briefcase-outline"></i><span class="side-menu__label">Kenaikan Pangkat</span></a>
         </li>
         <li>
             <h3>Surat</h3>
@@ -37,6 +37,12 @@
             <a class="side-menu__item" href="{{ route('pegawai.surat_masuk.index') }}"><i class="side-menu__icon" data-eva="email-outline"></i><span class="side-menu__label">Surat Masuk</span><span class="badge badge-pill badge-info">{{App\Models\Disposisi::where('pegawai_id',auth()->user()->pegawai->id)->where('is_read', 0)->count()}}</span></a>
         </li>
         @endauth
+        <li>
+            <h3>Cuti</h3>
+        </li>
+        <li>
+            <a class="side-menu__item" href="{{ route('pegawai.cuti.index') }}"><i class="side-menu__icon" data-eva="file-text-outline"></i><span class="side-menu__label">Cuti</span></a>
+        </li>
         <li>
             <h3>Document</h3>
         </li>

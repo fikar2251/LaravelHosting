@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@section('title', 'Unit List')
+@section('title', 'kategori Cuti List')
 @push('bread')
-<li class="breadcrumb-item active">Unit</li>
+<li class="breadcrumb-item active">kategori Cuti</li>
 @endpush
 @section('content')
 <div class="row">
@@ -9,7 +9,7 @@
         <div class="card">
             <div class="card-header d-flex flex-row justify-content-between">
                 <a href="{{ url()->previous() }}" class="btn btn-sm btn-info">Back</a>
-                <a href="{{ route('admin.unit.create') }}" class="btn btn-sm btn-primary">Create New</a>
+                <a href="{{ route('admin.kategori_cuti.create') }}" class="btn btn-sm btn-primary">Create New</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -17,21 +17,21 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Name</th>
+                                <th>Kategori Cuti</th>
                                 <th>Total</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($units as $data)
+                            @foreach($kategori_cutis as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->nama }}</td>
-                                <td>{{ $data->pegawais->count() }}</td>
+                                <td>{{ $data->cutis->count() }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.unit.edit', $data->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                        <form action="{{ route('admin.unit.destroy', $data->id) }}" method="post">
+                                        <a href="{{ route('admin.kategori_cuti.edit', $data->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        <form action="{{ route('admin.kategori_cuti.destroy', $data->id) }}" method="post">
                                             @csrf
                                             @method('delete')
                                             <button class="btn btn-sm btn-danger delete_confirm" type="submit">Destroy</button>
@@ -52,20 +52,20 @@
 <script>
     $('#datatable').DataTable()
     $('.delete_confirm').click(function(event) {
-        let form = $(this).closest("form");
-        event.preventDefault();
-        swal({
-                title: `Are you sure you want to delete this record?`,
-                text: "If you delete this, it will be gone forever.",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    form.submit();
-                }
-            });
-    });
+          let form =  $(this).closest("form");
+          event.preventDefault();
+          swal({
+              title: `Are you sure you want to delete this record?`,
+              text: "If you delete this, it will be gone forever.",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              form.submit();
+            }
+          });
+      });
 </script>
 @endpush
