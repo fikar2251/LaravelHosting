@@ -9,7 +9,6 @@
         <div class="card">
             <div class="card-header d-flex flex-row justify-content-between">
                 <a href="{{ url()->previous() }}" class="btn btn-sm btn-info">Back</a>
-                <a href="{{ route('admin.cuti.create') }}" class="btn btn-sm btn-primary">Create New</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
