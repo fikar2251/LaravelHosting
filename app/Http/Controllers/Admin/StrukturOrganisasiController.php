@@ -19,8 +19,10 @@ class StrukturOrganisasiController extends Controller
     public function index()
     {
         $parents = ParentStruktur::all();
+        $parent = ParentStruktur::first();
         return view('admin.struktur.index', [
-            'strukturs' => $parents
+            'strukturs' => $parents,
+            'parent' => $parent
         ]);
     }
 

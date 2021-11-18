@@ -13,5 +13,9 @@ class ChildStruktur extends Model
     {
         return $this->belongsTo(ParentStruktur::class);
     }
+    public function pegawai()
+    {
+        return $this->hasMany(Pegawai::class,'organisasi_id');
+    }
 }
     

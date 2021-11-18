@@ -5,7 +5,7 @@
             <input type="text" class="form-control @error('tujuan') is-invalid @enderror" name="tujuan" placeholder="Tujuan..." value="{{ $surat_keluar->tujuan ?? old('tujuan') }}">
             @error('tujuan')
             <div class="invalid-feedback">
-            {{ $message }}
+                {{ $message }}
             </div>
             @enderror
         </div>
@@ -16,7 +16,7 @@
             <input type="text" class="form-control @error('nomor') is-invalid @enderror" name="nomor" placeholder="Nomor..." value="{{ $surat_keluar->nomor ?? old('nomor') }}">
             @error('nomor')
             <div class="invalid-feedback">
-            {{ $message }}
+                {{ $message }}
             </div>
             @enderror
         </div>
@@ -27,7 +27,7 @@
             <input type="text" class="form-control @error('ringkas') is-invalid @enderror" name="ringkas" placeholder="Ringkas..." value="{{ $surat_keluar->ringkas ?? old('ringkas') }}">
             @error('ringkas')
             <div class="invalid-feedback">
-            {{ $message }}
+                {{ $message }}
             </div>
             @enderror
         </div>
@@ -41,7 +41,7 @@
             <input type="date" class="form-control @error('tanggal') is-invalid @enderror" name="tanggal" value="{{ $surat_keluar->tanggal ?? old('tanggal') }}">
             @error('tanggal')
             <div class="invalid-feedback">
-            {{ $message }}
+                {{ $message }}
             </div>
             @enderror
         </div>
@@ -52,7 +52,7 @@
             <textarea class="form-control @error('keterangan') is-invalid @enderror" name="keterangan" placeholder="Keterangan...">{{ $surat_keluar->keterangan ?? old('keterangan') }}</textarea>
             @error('keterangan')
             <div class="invalid-feedback">
-            {{ $message }}
+                {{ $message }}
             </div>
             @enderror
         </div>
@@ -67,7 +67,7 @@
             </select>
             @error('klasifikasi_id')
             <div class="invalid-feedback">
-            {{ $message }}
+                {{ $message }}
             </div>
             @enderror
         </div>
@@ -77,9 +77,9 @@
             <label for="file">File</label>
             <input type="file" data-height="180" class="dropify @error('file') is-invalid @enderror" name="file" placeholder="Ringkas..." value="{{ $surat_keluar->file ?? old('file') }}">
             @error('file')
-            <div class="invalid-feedback">
-            {{ $message }}
-            </div>
+            <strong class="text-danger">
+                {{ $message }}
+            </strong>
             @enderror
         </div>
     </div>
