@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\InformasiController;
 use App\Http\Controllers\Admin\JabatanController;
 use App\Http\Controllers\Admin\KategoriCutiControlller;
 use App\Http\Controllers\Admin\KategoriInformasiController;
+use App\Http\Controllers\Admin\KategoriSppdController;
 use App\Http\Controllers\Admin\KeahlianController;
 use App\Http\Controllers\Admin\KenaikanBerkalaController;
 use App\Http\Controllers\Admin\KenaikanPangkatController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Admin\PendidikanController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SppdController;
 use App\Http\Controllers\Admin\StatusPernikahanController;
 use App\Http\Controllers\Admin\StrukturOrganisasiController;
 use App\Http\Controllers\Admin\SuratKeluarController;
@@ -99,6 +101,8 @@ Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function () {
     Route::resource('disposisi',DisposisiController::class);
     Route::resource('kategori_cuti',KategoriCutiControlller::class);
     Route::resource('cuti',CutiController::class);
+    Route::resource('kategori_sppd',KategoriSppdController::class);
+    Route::resource('sppd',SppdController::class);
 });
 
 Route::prefix('/')->middleware('auth')->name('pegawai.')->group(function(){

@@ -66,7 +66,7 @@ class KenaikanPangkat extends Command
                         $this->line('Cannot Create Apply From TMT : '.$kenaikan.' - '.Carbon::now()->format('Y-m-d'));
                     }
                 }else{
-                    $apply = Apply::where('pegawai_id', $data->id)->get()->last();
+                    $apply = Apply::where('pegawai_id', $data->id)->where('tipe',2)->get()->last();
                     $kenaikan = Carbon::parse($apply->tanggal_kenaikan)->addYear(4)->subDay(7)->format('Y-m-d');
                     if($kenaikan == Carbon::now()->format('Y-m-d')){
                         $this->line('Oke Pangkat');

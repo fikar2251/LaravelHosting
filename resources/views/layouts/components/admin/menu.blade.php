@@ -44,10 +44,10 @@
             </ul>
         </li>
         <li class="slide">
-            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon" data-eva="pin-outline"></i><span class="side-menu__label">Mutasi</span><i class="angle fe fe-chevron-down"></i></a>
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon" data-eva="pin-outline"></i><span class="side-menu__label">Sppd</span><i class="angle fe fe-chevron-down"></i></a>
             <ul class="slide-menu">
-                <li><a class="slide-item" href="map-leaflet.html">Leaflet</a></li>
-                <li><a class="slide-item" href="map-vector.html">Vector Maps</a></li>
+                <li><a class="slide-item" href="{{ route('admin.kategori_sppd.index') }}">Daftar Sppd</a></li>
+                <li><a class="slide-item" href="{{ route('admin.sppd.index') }}">Daftar tujuan</a></li>
             </ul>
         </li>
         <li class="slide">

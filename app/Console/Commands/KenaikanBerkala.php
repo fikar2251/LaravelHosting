@@ -68,7 +68,8 @@ class KenaikanBerkala extends Command
                         $this->line('Cannot Create Apply From TMT : '.Carbon::now()->format('Y-m-d').' - '.$kenaikan);
                     }
                 }else{
-                    $apply = Apply::where('pegawai_id', $data->id)->get()->last();
+                    $apply = Apply::where('pegawai_id', $data->id)->where('tipe',1)->get()->last();
+                    $this->info(Carbon::parse($apply->tanggal_kenaikan)->addYear(2)->subDay(7)->format('Y-m-d'));
                     $kenaikan = Carbon::parse($apply->tanggal_kenaikan)->addYear(2)->subDay(7)->format('Y-m-d');
                     if($kenaikan == Carbon::now()->format('Y-m-d')){
                         $this->line('Oke Berkala : ');
