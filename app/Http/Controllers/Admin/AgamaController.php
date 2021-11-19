@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Agama;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 use Exception;
 
 class AgamaController extends Controller
@@ -19,7 +19,7 @@ class AgamaController extends Controller
     public function index()
     {
         return view('admin.agama.index',[
-            'agamas' => Agama::get()
+            'agamas' => Agama::orderBy('created_at','desc')->get()
         ]);
     }
 

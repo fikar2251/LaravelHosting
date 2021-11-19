@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\StatusPernikahan;
 use Exception;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 class StatusPernikahanController extends Controller
 {
     /**
@@ -17,7 +17,7 @@ class StatusPernikahanController extends Controller
     public function index()
     {
         return view('admin.status_pernikahan.index',[
-            'status_pernikahans' => StatusPernikahan::get()
+            'status_pernikahans' => StatusPernikahan::orderBy('created_at','desc')->get()
         ]);
     }
 

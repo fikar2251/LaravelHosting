@@ -19,7 +19,7 @@ class InformasiController extends Controller
      */
     public function index()
     {
-        $informasis = Artikel::get();
+        $informasis = Artikel::orderBy('created_at','desc')->get();
         return view('admin.informasi.index', [
             'informasis' => $informasis
         ]);

@@ -32,7 +32,7 @@ class PegawaiController extends Controller
     public function index()
     {
         return view('admin.pegawai.index', [
-            'pegawais' => Pegawai::get()
+            'pegawais' => Pegawai::orderBy('created_at','desc')->get()
         ]);
     }
 

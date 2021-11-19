@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 class UserController extends Controller
 {
     /**
@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         return view('admin.user.index',[
-            'users' => User::get()
+            'users' => User::orderBy('created_at','desc')->get()
         ]);
     }
 

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Keahlian;
 use Exception;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 class KeahlianController extends Controller
 {
     /**
@@ -17,7 +17,7 @@ class KeahlianController extends Controller
     public function index()
     {
         return view('admin.keahlian.index',[
-            'keahlians' => Keahlian::get()
+            'keahlians' => Keahlian::orderBy('created_at','desc')->get()
         ]);
     }
 

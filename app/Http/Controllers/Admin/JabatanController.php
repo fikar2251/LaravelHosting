@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Jabatan;
 use Exception;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Pegawai;
 
 class JabatanController extends Controller
@@ -19,7 +19,7 @@ class JabatanController extends Controller
     public function index()
     {
         return view('admin.jabatan.index',[
-            'jabatans' => Jabatan::get(),
+            'jabatans' => Jabatan::orderBy('created_at','desc')->get(),
         ]);
     }
 

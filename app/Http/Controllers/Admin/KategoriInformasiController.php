@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\KategoriArtikel;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KategoriInformasiController extends Controller
 {
@@ -16,7 +16,7 @@ class KategoriInformasiController extends Controller
      */
     public function index()
     {
-        $kategori_informasis = KategoriArtikel::get();
+        $kategori_informasis = KategoriArtikel::orderBy('created_at','desc')->get();
         return view('admin.kategori_informasi.index', [
             'kategori_informasis' => $kategori_informasis
         ]);

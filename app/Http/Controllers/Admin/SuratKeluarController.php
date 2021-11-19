@@ -19,7 +19,7 @@ class SuratKeluarController extends Controller
      */
     public function index()
     {
-        $surat_keluars = SuratKeluar::get();
+        $surat_keluars = SuratKeluar::orderBy('created_at','desc')->get();
         return view('admin.surat_keluar.index', [
             'surat_keluars' => $surat_keluars
         ]);

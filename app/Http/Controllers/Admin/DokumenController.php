@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Dokumen;
 use Exception;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 class DokumenController extends Controller
 {
     /**
@@ -17,7 +17,7 @@ class DokumenController extends Controller
     public function index()
     {
         return view('admin.dokumen.index',[
-            'dokumens' => Dokumen::get()
+            'dokumens' => Dokumen::orderBy('created_at','desc')->get()
         ]);
     }
 

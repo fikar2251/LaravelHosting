@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Golongan;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 use Exception;
 
 class GolonganController extends Controller
@@ -18,7 +18,7 @@ class GolonganController extends Controller
     public function index()
     {
         return view('admin.golongan.index', [
-            'golongans' => Golongan::get()
+            'golongans' => Golongan::orderBy('created_at','desc')->get()
         ]);
     }
 

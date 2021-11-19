@@ -21,7 +21,6 @@
                                 <th>Nama</th>
                                 <th>Tanggal Generate</th>
                                 <th>Tanggal Kenaikan</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -29,19 +28,10 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->kode }}</td>
-                                <td><a href="{{ route('admin.pegawai.show',$data->pegawai_id) }}">{{ $data->pegawai->nip }}</a></td>
+                                <td><a href="{{ route('pegawai.profile.show',$data->pegawai_id) }}">{{ $data->pegawai->nip }}</a></td>
                                 <td>{{ $data->pegawai->nama }}</td>
                                 <td>{{ $data->tanggal_generate }}</td>
                                 <td>{{ $data->tanggal_kenaikan }}</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <form action="{{ route('admin.kenaikan_pangkat.destroy', $data->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button class="btn btn-sm btn-danger delete_confirm" type="submit">Destroy</button>
-                                        </form>
-                                    </div>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -52,24 +42,8 @@
     </div>
 </div>
 @stop
-@push('admin.script')
+@push('pegawai.script')
 <script>
     $('#datatable').DataTable()
-    $('.delete_confirm').click(function(event) {
-          let form =  $(this).closest("form");
-          event.preventDefault();
-          swal({
-              title: `Are you sure you want to delete this record?`,
-              text: "If you delete this, it will be gone forever.",
-              icon: "warning",
-              buttons: true,
-              dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-              form.submit();
-            }
-          });
-      });
 </script>
 @endpush

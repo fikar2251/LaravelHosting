@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pendidikan;
 use Exception;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 class PendidikanController extends Controller
 {
     /**
@@ -17,7 +17,7 @@ class PendidikanController extends Controller
     public function index()
     {
         return view('admin.pendidikan.index',[
-            'pendidikans' => Pendidikan::get()
+            'pendidikans' => Pendidikan::orderBy('created_at','desc')->get()
         ]);
     }
 

@@ -9,7 +9,6 @@
         <div class="card">
             <div class="card-header d-flex flex-row justify-content-between">
                 <a href="{{ url()->previous() }}" class="btn btn-sm btn-info">Back</a>
-                <a href="{{ route('admin.kenaikan_berkala.create') }}" class="btn btn-sm btn-primary">Create New</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -36,8 +35,7 @@
                                 <td>{{ $data->tanggal_kenaikan }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.kenaikan_berkala.edit', $data->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                        <form action="{{ route('admin.kenaikan_berkala.destroy', $data->id) }}" method="post">
+                                       <form action="{{ route('admin.kenaikan_berkala.destroy', $data->id) }}" method="post">
                                             @csrf
                                             @method('delete')
                                             <button class="btn btn-sm btn-danger delete_confirm" type="submit">Destroy</button>

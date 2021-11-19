@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Pegawai;
 
 use App\Http\Controllers\Controller;
+use App\Models\Apply;
 use Illuminate\Http\Request;
 
-class DisposisiSuratController extends Controller
+class KenaikanBerkalaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,11 @@ class DisposisiSuratController extends Controller
      */
     public function index()
     {
-        //
+        $kenaikan_berkalas = Apply::where('tipe',1)->where('pegawai_id',auth()->user()->pegawai->id)->orderBy('created_at','desc')->get();
+        return view('pegawai.kenaikan_berkala.index',[
+            'kenaikan_berkalas' => $kenaikan_berkalas,
+            'pegawai' => auth()->user()->pegawai
+        ]);
     }
 
     /**

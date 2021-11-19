@@ -16,7 +16,7 @@ class KenaikanPangkatController extends Controller
      */
     public function index()
     {
-        $kenaikan_pangkats = Apply::where('tipe',2)->get();
+        $kenaikan_pangkats = Apply::where('tipe',2)->orderBy('created_at','desc')->get();
         return view('admin.kenaikan_pangkat.index',[
             'kenaikan_pangkats' => $kenaikan_pangkats
         ]);

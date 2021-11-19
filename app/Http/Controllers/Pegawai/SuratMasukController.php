@@ -25,7 +25,7 @@ class SuratMasukController extends Controller
         $id = auth()->user()->pegawai->id;
         $surat = SuratMasuk::whereHas('disposisi', function ($data) use ($id) {
             return $data->where('pegawai_id', $id);
-        })->orderBy('created_at', 'desc')->paginate(2);
+        })->orderBy('created_at', 'desc')->paginate(5);
         return view('pegawai.surat_masuk.index', [
             'surat' => $surat,
             'pegawai' => $pegawai

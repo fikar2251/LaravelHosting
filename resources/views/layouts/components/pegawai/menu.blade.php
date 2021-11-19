@@ -24,10 +24,10 @@
             <h3>Kenaikan</h3>
         </li>
         <li>
-            <a class="side-menu__item" href="#"><i class="side-menu__icon" data-eva="grid-outline"></i><span class="side-menu__label">Kenaikan Berkala</span></a>
+            <a class="side-menu__item" href="{{ route('pegawai.kenaikan_berkala.index') }}"><i class="side-menu__icon" data-eva="grid-outline"></i><span class="side-menu__label">Kenaikan Berkala</span></a>
         </li>
         <li>
-            <a class="side-menu__item" href="#"><i class="side-menu__icon" data-eva="briefcase-outline"></i><span class="side-menu__label">Kenaikan Pangkat</span></a>
+            <a class="side-menu__item" href="{{ route('pegawai.kenaikan_pangkat.index') }}"><i class="side-menu__icon" data-eva="briefcase-outline"></i><span class="side-menu__label">Kenaikan Pangkat</span></a>
         </li>
         <li>
             <h3>Surat</h3>

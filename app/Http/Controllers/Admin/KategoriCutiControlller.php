@@ -16,7 +16,7 @@ class KategoriCutiControlller extends Controller
      */
     public function index()
     {
-        $kategori_cutis = KategoriCuti::get();
+        $kategori_cutis = KategoriCuti::orderBy('created_at','desc')->get();
         return view('admin.kategori_cuti.index',[
             'kategori_cutis' => $kategori_cutis
         ]); 

@@ -16,7 +16,7 @@ class KenaikanBerkalaController extends Controller
      */
     public function index()
     {
-        $kenaikan_berkalas = Apply::where('tipe',1)->get();
+        $kenaikan_berkalas = Apply::where('tipe',1)->orderBy('created_at','desc')->get();
         return view('admin.kenaikan_berkala.index',[
             'kenaikan_berkalas' => $kenaikan_berkalas
         ]);

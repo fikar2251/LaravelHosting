@@ -33,6 +33,8 @@ use App\Http\Controllers\DevController;
 use App\Http\Controllers\Pegawai\AccessController;
 use App\Http\Controllers\Pegawai\CutiController as PegawaiCutiController;
 use App\Http\Controllers\Pegawai\FileController;
+use App\Http\Controllers\Pegawai\KenaikanBerkalaController as PegawaiKenaikanBerkalaController;
+use App\Http\Controllers\Pegawai\KenaikanPangkatController as PegawaiKenaikanPangkatController;
 use App\Http\Controllers\Pegawai\ProfileController;
 use App\Http\Controllers\Pegawai\SuratMasukController as PegawaiSuratMasukController;
 use Illuminate\Support\Facades\Auth;
@@ -109,4 +111,6 @@ Route::prefix('/')->middleware('auth')->name('pegawai.')->group(function(){
     Route::get('/file/password/{id}/{password}',[ApiPegawaiController::class, 'FilePassword']);
     Route::get('/filepegawai/{id}', [ApiPegawaiController::class, 'FilePegawaiIndex']);
     Route::resource('cuti',PegawaiCutiController::class);
+    Route::resource('kenaikan_berkala',PegawaiKenaikanBerkalaController::class)->only(['index']);
+    Route::resource('kenaikan_pangkat',PegawaiKenaikanPangkatController::class)->only(['index']);
 });

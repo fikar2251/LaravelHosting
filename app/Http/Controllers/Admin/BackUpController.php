@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class BackUpController extends Controller
 {
@@ -17,7 +17,7 @@ class BackUpController extends Controller
     public function index()
     {
         return view('admin.backup.index', [
-            'user_backups' => User::onlyTrashed()->get()
+            'user_backups' => User::onlyTrashed()->orderBy('created_at','desc')->get()
         ]);
     }
 

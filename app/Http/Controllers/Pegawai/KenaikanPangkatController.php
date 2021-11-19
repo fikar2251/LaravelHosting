@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Pegawai;
 
 use App\Http\Controllers\Controller;
-use App\Models\Unit;
+use App\Models\Apply;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
 
-class UnitController extends Controller
+class KenaikanPangkatController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +15,10 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $units = Unit::orderBy('created_at','desc')->get();
-        return view('admin.unit.index',[
-            'units' => $units
+        $kenaikan_pangkats = Apply::where('tipe',2)->where('pegawai_id',auth()->user()->pegawai->id)->orderBy('created_at','desc')->get();
+        return view('pegawai.kenaikan_pangkat.index',[
+            'kenaikan_pangkats' => $kenaikan_pangkats,
+            'pegawai' => auth()->user()->pegawai
         ]);
     }
 
@@ -29,10 +29,7 @@ class UnitController extends Controller
      */
     public function create()
     {
-        $unit = new Unit();
-        return view('admin.unit.create',[
-            'unit' => $unit
-        ]);
+        //
     }
 
     /**
@@ -43,14 +40,7 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
-        $attr = $this->validate($request,[
-            'nama' => 'required'
-        ]);
-
-        Unit::create($attr);
-
-        Alert::success('Success', 'Success Create Unit');
-        return back();
+        //
     }
 
     /**
@@ -72,10 +62,7 @@ class UnitController extends Controller
      */
     public function edit($id)
     {
-        $unit = Unit::findOrFail($id);
-        return view('admin.unit.edit',[
-            'unit' => $unit
-        ]);
+        //
     }
 
     /**
@@ -87,15 +74,7 @@ class UnitController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $attr = $this->validate($request,[
-            'nama' => 'required'
-        ]);
-
-        Unit::findOrFail($id)->update($attr);
-        Alert::success('Success', 'Success Update Unit');
-
-        return back();
-
+        //
     }
 
     /**
@@ -106,13 +85,6 @@ class UnitController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            Unit::findOrFail($id)->delete();
-            Alert::success('Success','Success Delete Unit');
-            return back();
-        } catch (\Throwable $th) {
-            Alert::error('Error',$th->getMessage());
-            return back();
-        }
+        //
     }
 }

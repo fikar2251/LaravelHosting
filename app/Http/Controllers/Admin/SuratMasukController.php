@@ -19,7 +19,7 @@ class SuratMasukController extends Controller
      */
     public function index()
     {
-        $surat_masuks = SuratMasuk::get();
+        $surat_masuks = SuratMasuk::orderBy('created_at','desc')->get();
         return view('admin.surat_masuk.index', [
             'surat_masuks' => $surat_masuks
         ]);
