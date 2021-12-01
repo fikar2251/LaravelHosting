@@ -1,7 +1,14 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DisposisiController;
+use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\PegawaiController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\SuratMasukController;
+use App\Http\Controllers\DevController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +24,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+//API route for login user
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/reset-password-token', [AuthController::class, 'forgot']);
+Route::post('password/reset', [AuthController::class,'reset']);
+
+Route::middleware('auth:sanctum')->group(function(){
+    // API route for logout user
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('surat_masuk',[SuratMasukController::class, 'get']);
+    Route::post('change_password',[AuthController::class, 'change_password']);
+
+    Route::get('profile', [ProfileController::class, 'show']);
+    Route::put('profile',[ProfileController::class, 'update']);
+    Route::get('disposisi', [DisposisiController::class,'get']);
+    Route::get('disposisi/{id}', [DisposisiController::class,'show']);
+    Route::get('document', [DocumentController::class, 'get']);
+    Route::get('document/{id}', [DocumentController::class, 'download']);
 });
 
 Route::prefix('/admin')->name('admin.')->group(function () {

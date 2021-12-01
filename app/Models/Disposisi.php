@@ -27,4 +27,8 @@ class Disposisi extends Model
     {
         return $this->hasMany(Response::class);
     }
+    public function surat_masuk()
+    {
+        return $this->belongsTo(SuratMasuk::class);
+    }
 }
