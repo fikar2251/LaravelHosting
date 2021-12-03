@@ -54,6 +54,110 @@
                 </div>
             </div>
         </div>
+        <div class="card mg-b-20 overflow-hidden">
+            <div class="card-body">
+                <div class="card-header pt-0 pl-0 pr-0 d-flex justify-content-between">
+                    <div>
+                        <label class="main-content-label mb-1">Absensi</label>
+                        <span class="d-block tx-12 text-muted">{{ Carbon\Carbon::now()->format('Y F d') }}</span>
+                    </div>
+                    <div>
+                        <h1 class="lead" id="txt">asd</h1>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>tanggal</th>
+                        <th>masuk</th>
+                        <th>selesai</th>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <p class="lead">{{ Carbon\Carbon::now()->format('Y-m-d') }}</p>
+                        </td>
+                        <td class="text-center"><button @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->exists()) @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->first()->masuk) disabled @endif @endif id="masuk" class="btn btn-primary">Absen Masuk</button></td>
+                        <td class="text-center"><button @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->exists()) @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->first()->keluar) disabled @endif @endif id="pulang" class="btn btn-success">Absen Pulang</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+<input type="hidden" id="pegawai" value="{{ $pegawai->id }}">
+<!-- JQuery min js -->
+<script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+<!-- SweetAlert -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function() {
+        startTime()
+    })
+    $('#masuk').on('click', function() {
+        $.ajax({
+            url: `/api/pegawai/masuk`,
+            method: 'post',
+            data: {
+                'masuk': $('#txt').html(),
+                'pegawai': $('#pegawai').val()
+            },
+            success: function(response) {
+                Swal.fire('Good job!',
+                    response,
+                    'success')
+                $('#masuk').attr('disabled','disabled')
+                console.log(response)
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.responseText
+                })
+                console.error(error)
+            }
+        })
+    });
+    $('#pulang').on('click', function() {
+        $.ajax({
+            url: `/api/pegawai/pulang`,
+            method: 'post',
+            data: {
+                'pulang': $('#txt').html(),
+                'pegawai': $('#pegawai').val()
+            },
+            success: function(response) {
+                Swal.fire('Good job!',
+                    response,
+                    'success')
+                $('#pulang').attr('disabled','disabled')
+                console.log(response)
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.responseText
+                })
+                console.error(error)
+            }
+        })
+    });
+    function startTime() {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        $('#txt').html(`${h}:${m}:${s}`)
+        setTimeout(startTime, 1000);
+    }
+
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i
+        }; // add zero in front of numbers < 10
+        return i;
+    }
+</script>
 <!-- ROW-3 -->

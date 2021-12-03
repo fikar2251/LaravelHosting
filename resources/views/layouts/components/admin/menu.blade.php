@@ -58,6 +58,13 @@
             </ul>
         </li>
         <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon" data-eva="clock-outline"></i><span class="side-menu__label">Absensi Pegawai</span><i class="angle fe fe-chevron-down"></i></a>
+            <ul class="slide-menu">
+                <li><a class="slide-item" href="{{  route('admin.jam_kerja.index') }}">Jam Kerja</a></li>
+                <li><a class="slide-item" href="{{  route('admin.absensi.index') }}">Absensi</a></li>
+            </ul>
+        </li>
+        <li class="slide">
             <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon" data-eva="stop-circle-outline"></i><span class="side-menu__label">User & Backup</span><i class="angle fe fe-chevron-down"></i></a>
             <ul class="slide-menu">
                 <li><a class="slide-item" href="{{ route('admin.user.index') }}">User</a></li>

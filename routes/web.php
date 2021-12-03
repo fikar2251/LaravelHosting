@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AbsensiController as AdminAbsensiController;
 use App\Http\Controllers\Admin\AgamaController;
 use App\Http\Controllers\Admin\BackUpController;
 use App\Http\Controllers\Admin\BackUpDatabaseController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\DokumenController;
 use App\Http\Controllers\Admin\GolonganController;
 use App\Http\Controllers\Admin\InformasiController;
 use App\Http\Controllers\Admin\JabatanController;
+use App\Http\Controllers\Admin\JamKerjaController;
 use App\Http\Controllers\Admin\KategoriCutiControlller;
 use App\Http\Controllers\Admin\KategoriInformasiController;
 use App\Http\Controllers\Admin\KategoriSppdController;
@@ -32,6 +34,7 @@ use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Api\PegawaiController as ApiPegawaiController;
 use App\Http\Controllers\DevController;
+use App\Http\Controllers\Pegawai\AbsensiController;
 use App\Http\Controllers\Pegawai\AccessController;
 use App\Http\Controllers\Pegawai\CutiController as PegawaiCutiController;
 use App\Http\Controllers\Pegawai\FileController;
@@ -86,6 +89,9 @@ Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function () {
         Route::resource('unit', UnitController::class);
         Route::resource('struktur', StrukturOrganisasiController::class);
     });
+    Route::post('absensi/laporan', [AdminAbsensiController::class, 'laporan'])->name('absensi.laporan');
+    Route::resource('absensi', AdminAbsensiController::class);
+    Route::resource('jam_kerja', JamKerjaController::class)->except(['create','store','destroy']);
     Route::resource('user', UserController::class);
     Route::resource('user_backup', BackUpController::class);
     Route::get('backup/export/database',[BackUpDatabaseController::class,'export'])->name('backup.export');
@@ -117,4 +123,6 @@ Route::prefix('/')->middleware('auth')->name('pegawai.')->group(function(){
     Route::resource('cuti',PegawaiCutiController::class);
     Route::resource('kenaikan_berkala',PegawaiKenaikanBerkalaController::class)->only(['index']);
     Route::resource('kenaikan_pangkat',PegawaiKenaikanPangkatController::class)->only(['index']);
+    Route::post('absensi/filter',[AbsensiController::class, 'filter'])->name('absensi.filter');
+    Route::get('absensi',[AbsensiController::class,'index'])->name('absensi.index');
 });

@@ -58,4 +58,8 @@ class Pegawai extends Model
     {
         return $this->hasMany(FilePegawai::class);
     }
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class);
+    }
 }

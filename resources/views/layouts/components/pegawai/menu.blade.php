@@ -49,6 +49,12 @@
         <li>
             <a class="side-menu__item" href="{{ route('pegawai.file.index') }}"><i class="side-menu__icon" data-eva="cube-outline"></i><span class="side-menu__label">Document Control</span></a>
         </li>
+        <li>
+            <h3>Absensi</h3>
+        </li>
+        <li>
+            <a class="side-menu__item" href="{{ route('pegawai.absensi.index') }}"><i class="side-menu__icon" data-eva="clock-outline"></i><span class="side-menu__label">Riwayat Absen</span></a>
+        </li>
     </ul>
 </aside>
 <!--/App Sidebar-->

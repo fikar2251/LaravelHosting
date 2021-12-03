@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\AbsenController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CutiController;
 use App\Http\Controllers\Api\DisposisiController;
 use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\PegawaiController;
@@ -44,6 +46,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('disposisi/{id}', [DisposisiController::class,'show']);
     Route::get('document', [DocumentController::class, 'get']);
     Route::get('document/{id}', [DocumentController::class, 'download']);
+    Route::get('cuti/kategori',[CutiController::class,'GetKategoriCuti']);
+    Route::post('masuk', [AbsenController::class, 'masuk']);
+    Route::post('pulang', [AbsenController::class, 'pulang']);
 });
 
 Route::prefix('/admin')->name('admin.')->group(function () {
@@ -85,4 +90,7 @@ Route::prefix('/pegawai')->name('pegawai.')->group(function () {
     Route::get('/file/access/index/{id}',[PegawaiController::class, 'FileAccessIndex']);
     Route::get('/file/access/{id}',[PegawaiController::class, 'FileAccess']);
     Route::post('/file/access/store', [PegawaiController::class, 'FileAccessStore']);
+
+    Route::post('masuk', [PegawaiController::class, 'masuk']);
+    Route::post('pulang', [PegawaiController::class, 'pulang']);
 });

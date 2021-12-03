@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DevController;
+use App\Models\Absensi;
 use App\Models\Access;
 use App\Models\Comment;
 use App\Models\Disposisi;
 use App\Models\FilePegawai;
+use App\Models\Jam;
 use App\Models\Pegawai;
 use App\Models\Pendidikan;
 use App\Models\Response;
@@ -22,6 +24,7 @@ use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\ValidationException;
+use Prophecy\Call\Call;
 
 class PegawaiController extends Controller
 {
@@ -187,11 +190,11 @@ class PegawaiController extends Controller
     }
     public function FileIndex($id)
     {
-        $query = FilePegawai::where('access','public')->whereHas('pegawai', function ($qr) use ($id) {
+        $query = FilePegawai::where('access', 'public')->whereHas('pegawai', function ($qr) use ($id) {
             return $qr->where('unit_id', Pegawai::find($id)->unit_id);
         })->orWhereHas('access', function ($qr) use ($id) {
             return $qr->where('user_id', Pegawai::find($id)->user_id);
-        })->orWhere('pegawai_id',$id)->orderBy('created_at', 'desc')->get();
+        })->orWhere('pegawai_id', $id)->orderBy('created_at', 'desc')->get();
 
 
         return datatables()->of($query)->editColumn('file_name', function ($data) {
@@ -297,6 +300,104 @@ class PegawaiController extends Controller
             return response()->json($request->all());
         } catch (Exception $error) {
             return response()->json(['error' => $error->getMessage()], 500);
+        }
+    }
+    public function masuk(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'masuk' => 'required',
+            'pegawai' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->getMessageBag(), 403);
+        }
+
+        $now = Carbon::parse($request->masuk);
+
+
+        $jam = Jam::where('keterangan', 'Masuk')->first();
+        $mulai = Carbon::parse($jam->mulai)->format('H:i:s');
+        $selesai = Carbon::parse($jam->selesai)->format('H:i:s');
+
+
+        // if ($now->between($mulai, $selesai)) {
+        if ($now->format('H:i:s') <= $selesai) {
+            if (Absensi::where('pegawai_id',$request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
+                // return response()->json('update');
+                Absensi::where('pegawai_id',$request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
+                    'tanggal' => Carbon::now()->format('Y-m-d'),
+                    'masuk' => $request->masuk,
+                    'pegawai_id' => $request->pegawai,
+                    'tipe' => 'tidak telat'
+                ]);
+            } else {
+                // return response()->json('create');
+                Absensi::create([
+                    'tanggal' => Carbon::now()->format('Y-m-d'),
+                    'masuk' => $request->masuk,
+                    'pegawai_id' => $request->pegawai,
+                    'tipe' => 'tidak telat'
+                ]);
+            }
+            return response()->json('anda tidak telat, semoga hari mu menyenangkan', 200);
+        } else {
+            if (Absensi::where('pegawai_id',$request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
+                // return response()->json('update');
+                Absensi::where('pegawai_id',$request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
+                    'tanggal' => Carbon::now()->format('Y-m-d'),
+                    'masuk' => $request->masuk,
+                    'pegawai_id' => $request->pegawai,
+                    'tipe' => 'telat'
+                ]);
+            } else {
+                // return response()->json('create');
+                Absensi::create([
+                    'tanggal' => Carbon::now()->format('Y-m-d'),
+                    'masuk' => $request->masuk,
+                    'pegawai_id' => $request->pegawai,
+                    'tipe' => 'telat'
+                ]);
+            }
+            return response()->json('anda telat, semoga hari mu suram', 200);
+        }
+    }
+    public function pulang(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'pulang' => 'required',
+            'pegawai' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->getMessageBag(), 403);
+        }
+
+        $now = Carbon::parse($request->pulang);
+
+
+        $jam = Jam::where('keterangan', 'Pulang')->first();
+        $mulai = Carbon::parse($jam->mulai)->format('H:i:s');
+        $selesai = Carbon::parse($jam->selesai)->format('H:i:s');
+
+
+        if ($now->format('H:i:s') >= $mulai) {
+            if (Absensi::where('pegawai_id',$request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
+                // return response()->json('update');
+                Absensi::where('pegawai_id',$request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
+                    'tanggal' => Carbon::now()->format('Y-m-d'),
+                    'keluar' => $request->pulang,
+                    'pegawai_id' => $request->pegawai
+                ]);
+            } else {
+                // return response()->json('create');
+                Absensi::create([
+                    'tanggal' => Carbon::now()->format('Y-m-d'),
+                    'keluar' => $request->pulang,
+                    'pegawai_id' => $request->pegawai
+                ]);
+            }
+            return response()->json('anda boleh pulang', 200);
+        } else {
+            return response()->json('anda tidak boleh pulang', 500);
         }
     }
 }
