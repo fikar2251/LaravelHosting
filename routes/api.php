@@ -35,20 +35,35 @@ Route::post('/reset-password-token', [AuthController::class, 'forgot']);
 Route::post('password/reset', [AuthController::class,'reset']);
 
 Route::middleware('auth:sanctum')->group(function(){
-    // API route for logout user
+    // API route authentication
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('surat_masuk',[SuratMasukController::class, 'get']);
     Route::post('change_password',[AuthController::class, 'change_password']);
 
-    Route::get('profile', [ProfileController::class, 'show']);
-    Route::put('profile',[ProfileController::class, 'update']);
-    Route::get('disposisi', [DisposisiController::class,'get']);
-    Route::get('disposisi/{id}', [DisposisiController::class,'show']);
-    Route::get('document', [DocumentController::class, 'get']);
-    Route::get('document/{id}', [DocumentController::class, 'download']);
+    // API surat
+    Route::get('surat_masuk',[SuratMasukController::class, 'GetSuratMasuk']);
+    Route::get('surat_masuk/{id}',[SuratMasukController::class, 'ShowSuratMasuk']);
+
+    // API Profile
+    Route::get('profile', [ProfileController::class, 'ShowProfile']);
+    Route::put('profile',[ProfileController::class, 'UpdateProfile']);
+
+    // API Disposisi
+    Route::get('disposisi', [DisposisiController::class,'GetDisposisi']);
+    Route::get('disposisi/{id}', [DisposisiController::class,'ShowDisposisi']);
+
+    // API Document
+    Route::get('document', [DocumentController::class, 'GetDocument']);
+    Route::get('document/{id}', [DocumentController::class, 'DownloadDocument']);
+
+    // API Cuti
     Route::get('cuti/kategori',[CutiController::class,'GetKategoriCuti']);
-    Route::post('masuk', [AbsenController::class, 'masuk']);
-    Route::post('pulang', [AbsenController::class, 'pulang']);
+    Route::get('cuti',[CutiController::class, 'GetCuti']);
+    Route::get('cuti/{id}',[CutiController::class, 'ShowCuti']);
+    Route::post('cuti', [CutiController::class, 'PostCuti']);
+
+    // API Login
+    Route::post('masuk', [AbsenController::class, 'PostMasuk']);
+    Route::post('pulang', [AbsenController::class, 'PostPulang']);
 });
 
 Route::prefix('/admin')->name('admin.')->group(function () {
@@ -91,6 +106,6 @@ Route::prefix('/pegawai')->name('pegawai.')->group(function () {
     Route::get('/file/access/{id}',[PegawaiController::class, 'FileAccess']);
     Route::post('/file/access/store', [PegawaiController::class, 'FileAccessStore']);
 
-    Route::post('masuk', [PegawaiController::class, 'masuk']);
-    Route::post('pulang', [PegawaiController::class, 'pulang']);
+    Route::post('masuk', [PegawaiController::class, 'AbsenMasuk']);
+    Route::post('pulang', [PegawaiController::class, 'AbsenPulang']);
 });

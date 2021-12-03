@@ -65,20 +65,22 @@
                         <h1 class="lead" id="txt">asd</h1>
                     </div>
                 </div>
-                <table class="table table-bordered">
-                    <tr>
-                        <th>tanggal</th>
-                        <th>masuk</th>
-                        <th>selesai</th>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <p class="lead">{{ Carbon\Carbon::now()->format('Y-m-d') }}</p>
-                        </td>
-                        <td class="text-center"><button @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->exists()) @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->first()->masuk) disabled @endif @endif id="masuk" class="btn btn-primary">Absen Masuk</button></td>
-                        <td class="text-center"><button @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->exists()) @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->first()->keluar) disabled @endif @endif id="pulang" class="btn btn-success">Absen Pulang</button></td>
-                    </tr>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>tanggal</th>
+                            <th>masuk</th>
+                            <th>selesai</th>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <p class="lead">{{ Carbon\Carbon::now()->format('Y-m-d') }}</p>
+                            </td>
+                            <td class="text-center"><button @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->exists()) @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->first()->masuk) disabled @endif @endif id="masuk" class="btn btn-primary">Absen Masuk</button></td>
+                            <td class="text-center"><button @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->exists()) @if(\App\Models\Absensi::where('pegawai_id',$pegawai->id)->whereDate('tanggal',Carbon\Carbon::now()->format('Y-m-d'))->first()->keluar) disabled @endif @endif id="pulang" class="btn btn-success">Absen Pulang</button></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -104,7 +106,7 @@
                 Swal.fire('Good job!',
                     response,
                     'success')
-                $('#masuk').attr('disabled','disabled')
+                $('#masuk').attr('disabled', 'disabled')
                 console.log(response)
             },
             error: function(error) {
@@ -129,7 +131,7 @@
                 Swal.fire('Good job!',
                     response,
                     'success')
-                $('#pulang').attr('disabled','disabled')
+                $('#pulang').attr('disabled', 'disabled')
                 console.log(response)
             },
             error: function(error) {
@@ -142,6 +144,7 @@
             }
         })
     });
+
     function startTime() {
         const today = new Date();
         let h = today.getHours();

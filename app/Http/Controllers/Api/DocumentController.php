@@ -12,13 +12,13 @@ use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
-    public function get()
+    public function GetDocument()
     {
         $resource = FilePegawai::where('pegawai_id', Auth::user()->pegawai->id)->get();
         $response = $resource;
         return response()->json($response);
     }
-    public function download($id)
+    public function DownloadDocument($id)
     {
         try {
             $file_pegawai = FilePegawai::findOrFail($id);

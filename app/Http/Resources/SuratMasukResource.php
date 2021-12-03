@@ -24,7 +24,7 @@ class SuratMasukResource extends JsonResource
             'tanggal' => Carbon::parse($this->tanggal)->format('d F Y'),
             'keterangan' => $this->keterangan,
             'file' => asset('storage/'.$this->file),
-            'klasifikasi_id' => $this->klasifikasi->kode
+            'klasifikasi' => new KlasifikasiResource($this->klasifikasi)
         ];
     }
 }

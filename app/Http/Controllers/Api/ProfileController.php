@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
-    public function show()
+    public function ShowProfile()
     {
         return response()->json(auth()->user()->pegawai);
     }
-    public function update(Request $request)
+    public function UpdateProfile(Request $request)
     {
         $validator = Validator::make($request->all(),[
             'nama' => 'required|string',

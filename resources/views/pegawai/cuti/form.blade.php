@@ -23,7 +23,7 @@
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            <label for="kategori_cuti_id">Tanggal Akhir</label>
+            <label for="kategori_cuti_id">Kategori Cuti</label>
             <select name="kategori_cuti_id" id="kategori_cuti_id" value="{{ $cuti->kategori_cuti_id ?? old('kategori_cuti_id') }}" class="form-control @error('kategori_cuti_id') is-invalid @enderror">
                 @foreach($kategori_cuti as $option)
                 <option @if($option->id == $cuti->kategori_cuti_id ?? old('kategori_cuti_id')) selected @endif value="{{ $option->id }}">{{ $option->nama }}</option>

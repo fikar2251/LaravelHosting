@@ -10,10 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class SuratMasukController extends Controller
 {
-    public function get()
+    public function GetSuratMasuk()
     {
         $surat_masuk = SuratMasuk::get();
         $response = SuratMasukResource::collection($surat_masuk);
         return response()->json($response);
+    }
+    public function ShowSuratMasuk($id)
+    {
+        $resource = SuratMasuk::findOrFail($id);
+        $response = new SuratMasukResource($resource);
+        return response()->json($response);
+
     }
 }

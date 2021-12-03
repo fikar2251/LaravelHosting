@@ -302,7 +302,7 @@ class PegawaiController extends Controller
             return response()->json(['error' => $error->getMessage()], 500);
         }
     }
-    public function masuk(Request $request)
+    public function AbsenMasuk(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'masuk' => 'required',
@@ -320,10 +320,8 @@ class PegawaiController extends Controller
         $selesai = Carbon::parse($jam->selesai)->format('H:i:s');
 
 
-        // if ($now->between($mulai, $selesai)) {
         if ($now->format('H:i:s') <= $selesai) {
             if (Absensi::where('pegawai_id',$request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
-                // return response()->json('update');
                 Absensi::where('pegawai_id',$request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
                     'tanggal' => Carbon::now()->format('Y-m-d'),
                     'masuk' => $request->masuk,
@@ -331,7 +329,6 @@ class PegawaiController extends Controller
                     'tipe' => 'tidak telat'
                 ]);
             } else {
-                // return response()->json('create');
                 Absensi::create([
                     'tanggal' => Carbon::now()->format('Y-m-d'),
                     'masuk' => $request->masuk,
@@ -342,7 +339,6 @@ class PegawaiController extends Controller
             return response()->json('anda tidak telat, semoga hari mu menyenangkan', 200);
         } else {
             if (Absensi::where('pegawai_id',$request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
-                // return response()->json('update');
                 Absensi::where('pegawai_id',$request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
                     'tanggal' => Carbon::now()->format('Y-m-d'),
                     'masuk' => $request->masuk,
@@ -350,7 +346,6 @@ class PegawaiController extends Controller
                     'tipe' => 'telat'
                 ]);
             } else {
-                // return response()->json('create');
                 Absensi::create([
                     'tanggal' => Carbon::now()->format('Y-m-d'),
                     'masuk' => $request->masuk,
@@ -361,7 +356,7 @@ class PegawaiController extends Controller
             return response()->json('anda telat, semoga hari mu suram', 200);
         }
     }
-    public function pulang(Request $request)
+    public function AbsenPulang(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'pulang' => 'required',
