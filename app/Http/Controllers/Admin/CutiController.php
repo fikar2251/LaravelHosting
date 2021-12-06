@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cuti;
+use App\Models\KategoriCuti;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -18,7 +19,8 @@ class CutiController extends Controller
     {
         $cutis = Cuti::orderBy('created_at','desc')->get();
         return view('admin.cuti.index',[
-            'cutis' => $cutis
+            'cutis' => $cutis,
+            'kategori_cutis' => KategoriCuti::get()
         ]);
     }
 
@@ -95,5 +97,21 @@ class CutiController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function filter(Request $request)
+    {
+        $this->validate($request,[
+            'start' => 'required|date',
+            'end' => 'required|date'
+        ]);
+        if($request->filter == 'all'){
+            $cutis = Cuti::whereBetween('tanggal_mulai',[$request->start,$request->end])->orderBy('created_at','desc')->get();
+        }else{
+            $cutis = Cuti::whereBetween('tanggal_mulai',[$request->start,$request->end])->orderBy('created_at','desc')->where('kategori_cuti_id', $request->filter)->get();
+        }
+        return view('admin.cuti.index',[
+            'cutis' => $cutis,
+            'kategori_cutis' => KategoriCuti::get()
+        ]);
     }
 }

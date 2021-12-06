@@ -60,7 +60,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::middleware('auth')->group(function(){
     Route::post('/DownloadOrView/{id}', [DevController::class, 'DownloadOrView'])->name('downloadorview');
@@ -106,6 +106,7 @@ Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function () {
     Route::get('disposisicreate/{id}',[DisposisiController::class,'createBySuratMasuk'])->name('disposisi.create.surat_masuk');
     Route::resource('disposisi',DisposisiController::class);
     Route::resource('kategori_cuti',KategoriCutiControlller::class);
+    Route::get('cuti/filter',[CutiController::class, 'filter'])->name('cuti.filter');
     Route::resource('cuti',CutiController::class);
     Route::resource('kategori_sppd',KategoriSppdController::class);
     Route::resource('sppd',SppdController::class);

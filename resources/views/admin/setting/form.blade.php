@@ -12,9 +12,18 @@
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            <label for="logo">Logo</label>
-            <input type="file" class="dropify @error('logo') is-invalid @enderror" data-height="180" name="logo" placeholder="Title Name..." value="{{ $setting->logo ?? old('logo') }}">
-            @error('logo')
+            <label for="logo_admin">Logo (Admin)</label>
+            <input type="file" class="dropify @error('logo_admin') is-invalid @enderror" data-height="180" name="logo_admin" placeholder="Title Name..." value="{{ $setting->logo_admin ?? old('logo_admin') }}">
+            @error('logo_admin')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="logo_pegawai">Logo (Pegawai)</label>
+            <input type="file" class="dropify @error('logo_pegawai') is-invalid @enderror" data-height="180" name="logo_pegawai" placeholder="Title Name..." value="{{ $setting->logo_pegawai ?? old('logo_pegawai') }}">
+            @error('logo_pegawai')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>

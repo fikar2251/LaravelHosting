@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-body">
                     @if(App\Models\Setting::first())
-                    <img src="{{ asset('storage/'.App\Models\Setting::first()->logo) }}" class="mb-3" alt="Logo">
+                    <img src="{{ asset('storage/'.App\Models\Setting::first()->logo_pegawai) }}" class="mb-3" alt="Logo">
                     @else
                     <img src="{{ asset('assets/img/brand/icon-1.png') }}" class="mb-3" alt="">
                     @endif

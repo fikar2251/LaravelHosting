@@ -7,7 +7,8 @@ use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
+
 class SettingController extends Controller
 {
     /**
@@ -43,20 +44,25 @@ class SettingController extends Controller
         $this->validate($request,[
             'title' => 'required',
             'description' => 'required',
-            'logo' => 'required|mimes:jpg,jpeg,png,svg'
+            'logo_admin' => 'required|mimes:jpg,jpeg,png,svg',
+            'logo_pegawai' => 'required|mimes:jpg,jpeg,png,svg'
         ]);
         try {
-            $name = 'logo'.'_'.$request->file('logo')->getClientOriginalName();
-            $path = $request->file('logo')->storeAs('/setting',$name);
+            $name_admin = 'logo_admin'.'_'.$request->file('logo_admin')->getClientOriginalName();
+            $path_admin = $request->file('logo_admin')->storeAs('/setting',$name_admin);
+            $name_pegawai = 'logo_pegawai'.'_'.$request->file('logo_pegawai')->getClientOriginalName();
+            $path_pegawai = $request->file('logo_pegawai')->storeAs('/setting',$name_pegawai);
             Setting::create([
                 'title' => $request->title,
                 'description' => $request->description,
-                'logo' => $path
+                'logo_admin' => $path_admin,
+                'logo_pegawai' => $path_pegawai
             ]);
             Alert::success('success', 'Success Store Setting');
             return redirect()->route('home');
         } catch (\Throwable $th) {
-            Storage::delete($path);
+            Storage::delete($path_admin);
+            Storage::delete($path_pegawai);
             Alert::error('error', $th->getMessage());
             return back();
         }
@@ -112,15 +118,27 @@ class SettingController extends Controller
                 'title' => $request->title,
                 'description' => $request->description
             ]);
-            if($request->logo){
+            if($request->logo_admin){
                 $this->validate($request,[
-                    'logo' => 'required|mimes:jpg,jpeg,png,svg'
+                    'logo_admin' => 'required|mimes:jpg,jpeg,png,svg',
                 ]);
-                Storage::delete($setting->logo);
-                $name = 'logo'.'_'.$request->file('logo')->getClientOriginalName();
-                $path = $request->file('logo')->storeAs('/setting',$name);
+                Storage::delete($setting->logo_admin);
+                $name_admin = 'logo_admin'.'_'.$request->file('logo_admin')->getClientOriginalName();
+                $path_admin = $request->file('logo_admin')->storeAs('/setting',$name_admin);
                 $setting->update([
-                    'logo' => $path
+                    'logo_admin' => $path_admin
+                ]);
+            }
+            
+            if($request->logo_pegawai){
+                $this->validate($request,[
+                    'logo_pegawai' => 'required|mimes:jpg,jpeg,png,svg',
+                ]);
+                Storage::delete($setting->logo_pegawai);
+                $name_pegawai = 'logo_pegawai'.'_'.$request->file('logo_pegawai')->getClientOriginalName();
+                $path_pegawai = $request->file('logo_pegawai')->storeAs('/setting',$name_pegawai);
+                $setting->update([
+                    'logo_pegawai' => $path_pegawai
                 ]);
             }
             Alert::success('success', 'Success Update Setting');

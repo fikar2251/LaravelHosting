@@ -9,9 +9,13 @@
         <div class="main-header-left">
             <!--logo-->
             <div>
-                <a class="main-logo desktop-logo" href="index.html"><img src="../../../assets/img/brand/logo-1.png" alt="logo"></a>
-                <a class="main-logo mobile-logo" href="index.html"><img src="../../../assets/img/brand/icon-1.png" alt="logo"></a>
-                <a class="main-logo dark-theme-logo" href="index.html"><img src="../../../assets/img/brand/logo-1-dark.png" alt="logo"></a>
+                @if(\App\Models\Setting::get()->count() > 0)
+                <a class="main-logo desktop-logo" href="index.html"><img class="rounded wd-100 wd-sm-100" src="{{ asset('storage/'.\App\Models\Setting::first()->logo_pegawai) }}" alt="logo"></a>
+                <a class="main-logo mobile-logo" href="index.html"><img class="rounded wd-100 wd-sm-100" src="{{ asset('storage/'.\App\Models\Setting::first()->logo_pegawai) }}" alt="logo"></a>
+                @else
+                <a class="main-logo desktop-logo" href="index.html"><img src="{{ asset('assets/img/brand/logo-white.png') }}" alt="logo"></a>
+                <a class="main-logo mobile-logo" href="index.html"><img src="{{ asset('assets/img/brand/favicon-white.png') }}" alt="logo"></a>
+                @endif
             </div>
             <!--/logo-->
             <!-- sidebar-toggle-->
@@ -184,10 +188,10 @@
                     <a class="dropdown-item" href="#"><i class="si si-calendar"></i> Activity</a>
                     <a class="dropdown-item" href="#"><i class="si si-bubbles"></i> Chat</a>
                     <a class="dropdown-item" href="#"><i class="si si-settings"></i> Settings</a>
-                    <a class="dropdown-item" href="#"  onclick="logoutform()"><i class="si si-power"></i> Logo Out</a>
+                    <a class="dropdown-item" href="#" onclick="logoutform()"><i class="si si-power"></i> Logo Out</a>
                     <form action="{{ route('logout') }}" method="post" id="logout-form">
-                            @csrf
-                        </form>
+                        @csrf
+                    </form>
                 </div>
             </div>
             <div class="main-header-sidebar-notification">
