@@ -58,6 +58,20 @@
             </ul>
         </li>
         <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon" data-eva="archive-outline"></i><span class="side-menu__label">Rapat</span><i class="angle fe fe-chevron-down"></i></a>
+            <ul class="slide-menu">
+                <li><a class="slide-item" href="{{  route('admin.rapat.index') }}">Rapat</a></li>
+            </ul>
+        </li>
+        <li class="slide">
+            <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon" data-eva="save-outline"></i><span class="side-menu__label">Penggajian </span><i class="angle fe fe-chevron-down"></i></a>
+            <ul class="slide-menu">
+                <li><a class="slide-item" href="{{ route('admin.penerimaan.index') }}">Penerimaan</a></li>
+                <li><a class="slide-item" href="{{ route('admin.potongan.index') }}">Potongan</a></li>
+                <li><a class="slide-item" href="{{ route('admin.gaji.index') }}">Gaji</a></li>
+            </ul>
+        </li>
+        <li class="slide">
             <a class="side-menu__item" data-toggle="slide" href="#"><i class="side-menu__icon" data-eva="clock-outline"></i><span class="side-menu__label">Absensi Pegawai</span><i class="angle fe fe-chevron-down"></i></a>
             <ul class="slide-menu">
                 <li><a class="slide-item" href="{{  route('admin.jam_kerja.index') }}">Jam Kerja</a></li>
