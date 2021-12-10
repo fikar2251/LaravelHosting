@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BackUpController;
 use App\Http\Controllers\Admin\BackUpDatabaseController;
 use App\Http\Controllers\Admin\CutiController;
 use App\Http\Controllers\Admin\DisposisiController;
+use App\Http\Controllers\Admin\DisposisiKeluarController;
 use App\Http\Controllers\Admin\DisposisiSuratKeluarController;
 use App\Http\Controllers\Admin\DisposisiSuratMasukController;
 use App\Http\Controllers\Admin\DokumenController;
@@ -95,6 +96,8 @@ Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function () {
     });
     Route::resource('penerimaan',MstPenerimaanController::class);
     Route::resource('potongan',MstPotonganController::class);
+    Route::get('gaji/print/{id}',[GajiController::class, 'print'])->name('gaji.print');
+    Route::post('gaji/filter',[GajiController::class, 'filter'])->name('gaji.filter');
     Route::resource('gaji', GajiController::class);
     Route::resource('rapat', RapatController::class);
     Route::post('absensi/laporan', [AdminAbsensiController::class, 'laporan'])->name('absensi.laporan');
@@ -118,6 +121,7 @@ Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function () {
     Route::resource('cuti',CutiController::class);
     Route::resource('kategori_sppd',KategoriSppdController::class);
     Route::resource('sppd',SppdController::class);
+    Route::resource('disposisi_keluar',DisposisiKeluarController::class);
 });
 
 Route::prefix('/')->middleware('auth')->name('pegawai.')->group(function(){

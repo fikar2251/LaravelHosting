@@ -1,21 +1,21 @@
 // Additional code for adding placeholder in search box of select2
-(function($) {
+(function ($) {
 	var Defaults = $.fn.select2.amd.require('select2/defaults');
 	$.extend(Defaults.defaults, {
 		searchInputPlaceholder: ''
 	});
 	var SearchDropdown = $.fn.select2.amd.require('select2/dropdown/search');
 	var _renderSearchDropdown = SearchDropdown.prototype.render;
-	SearchDropdown.prototype.render = function(decorated) {
+	SearchDropdown.prototype.render = function (decorated) {
 		// invoke parent method
 		var $rendered = _renderSearchDropdown.apply(this, Array.prototype.slice.apply(arguments));
 		this.$search.attr('placeholder', this.options.get('searchInputPlaceholder'));
 		return $rendered;
 	};
 })(window.jQuery);
-$(function() {
+$(function () {
 	'use strict'
-	$(document).ready(function() {
+	$(document).ready(function () {
 		$('.select2').select2({
 			tags: true,
 			placeholder: 'Choose one',
@@ -25,5 +25,17 @@ $(function() {
 			minimumResultsForSearch: Infinity,
 			placeholder: 'Choose one'
 		});
+		$('.select2-ajax').select2({
+			placeholder: 'Select Pegawai',
+			ajax: {
+				url: '/api/admin/find',
+				processResults: function (data) {
+					return {
+						results: data
+					};
+				},
+				cache: true
+			}
+		})
 	});
 });

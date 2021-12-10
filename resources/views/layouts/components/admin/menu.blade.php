@@ -41,6 +41,7 @@
                 <li><a class="slide-item" href="{{ route('admin.surat_masuk.index') }}">Surat Masuk</a></li>
                 <li><a class="slide-item" href="{{ route('admin.surat_keluar.index') }}">Surat Keluar</a></li>
                 <li><a class="slide-item" href="{{ route('admin.klasifikasi.index') }}">Klasifikasi Surat</a></li>
+                <li><a class="slide-item" href="{{ route('admin.disposisi_keluar.index') }}">Disposisi Keluar</a></li>
             </ul>
         </li>
         <li class="slide">

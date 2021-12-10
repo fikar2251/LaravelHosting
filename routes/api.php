@@ -30,6 +30,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 //API route for login user
+Route::post('/register',function(){
+    return response()->json(request()->all()); 
+});
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/reset-password-token', [AuthController::class, 'forgot']);
 Route::post('password/reset', [AuthController::class,'reset']);
@@ -54,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function(){
     // API Document
     Route::get('document', [DocumentController::class, 'GetDocument']);
     Route::get('document/{id}', [DocumentController::class, 'DownloadDocument']);
+    Route::get('document/{id}/show',[DocumentController::class, 'ShowDocument']);
 
     // API Cuti
     Route::get('cuti/kategori',[CutiController::class,'GetKategoriCuti']);
@@ -67,6 +71,8 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 
 Route::prefix('/admin')->name('admin.')->group(function () {
+    Route::get('/find',[PegawaiController::class,'FindPegawaiFromSelect2']);
+    Route::get('/findOrFail/{id}',[PegawaiController::class,'ShowPegawaiFromSelect2']);
     Route::prefix('/pegawai')->name('pegawai.')->group(function () {
         Route::post('/photo/{id}', [PegawaiController::class, 'Photo']);
         Route::get('/photo/delete/{id}', [PegawaiController::class, 'PhotoDelete']);
@@ -78,12 +84,16 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/filepegawai/{id}', [PegawaiController::class, 'FilePegawaiIndex']);
         Route::post('/file/{id}', [PegawaiController::class, 'File']);
         Route::get('/filepegawai/delete/{id}', [PegawaiController::class, 'FilePegawaiDelete']);
+
     });
     Route::prefix('/surat_masuk')->group(function(){
         Route::prefix('/disposisi')->group(function(){
             Route::get('response/{id}',[PegawaiController::class , 'SuratMasukDisposisiResponse']);
         });
     });
+    Route::get('getagamapiechart',[PegawaiController::class,'GetAgamaPieChartData']);
+    Route::get('getperkawinanpiechart',[PegawaiController::class,'GetPerkawinanPieChartData']);
+    Route::get('getjeniskelaminmorris',[PegawaiController::class,'GetJenisKelaminMorris']);
 });
 Route::prefix('/pegawai')->name('pegawai.')->group(function () {
     Route::post('/photo/{id}', [PegawaiController::class, 'Photo']);

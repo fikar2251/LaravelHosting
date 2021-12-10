@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\DevController;
 use App\Models\Absensi;
 use App\Models\Access;
+use App\Models\Agama;
 use App\Models\Comment;
 use App\Models\Disposisi;
 use App\Models\FilePegawai;
@@ -14,6 +15,7 @@ use App\Models\Pegawai;
 use App\Models\Pendidikan;
 use App\Models\Response;
 use App\Models\RiwayatPendidikan;
+use App\Models\StatusPernikahan;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -321,8 +323,8 @@ class PegawaiController extends Controller
 
 
         if ($now->format('H:i:s') <= $selesai) {
-            if (Absensi::where('pegawai_id',$request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
-                Absensi::where('pegawai_id',$request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
+            if (Absensi::where('pegawai_id', $request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
+                Absensi::where('pegawai_id', $request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
                     'tanggal' => Carbon::now()->format('Y-m-d'),
                     'masuk' => $request->masuk,
                     'pegawai_id' => $request->pegawai,
@@ -338,8 +340,8 @@ class PegawaiController extends Controller
             }
             return response()->json('anda tidak telat, semoga hari mu menyenangkan', 200);
         } else {
-            if (Absensi::where('pegawai_id',$request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
-                Absensi::where('pegawai_id',$request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
+            if (Absensi::where('pegawai_id', $request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
+                Absensi::where('pegawai_id', $request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
                     'tanggal' => Carbon::now()->format('Y-m-d'),
                     'masuk' => $request->masuk,
                     'pegawai_id' => $request->pegawai,
@@ -375,9 +377,9 @@ class PegawaiController extends Controller
 
 
         if ($now->format('H:i:s') >= $mulai) {
-            if (Absensi::where('pegawai_id',$request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
+            if (Absensi::where('pegawai_id', $request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
                 // return response()->json('update');
-                Absensi::where('pegawai_id',$request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
+                Absensi::where('pegawai_id', $request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
                     'tanggal' => Carbon::now()->format('Y-m-d'),
                     'keluar' => $request->pulang,
                     'pegawai_id' => $request->pegawai
@@ -394,5 +396,73 @@ class PegawaiController extends Controller
         } else {
             return response()->json('anda tidak boleh pulang', 500);
         }
+    }
+    public function FindPegawaiFromSelect2(Request $request)
+    {
+        $tags = Pegawai::orWhere('nama', 'like', '%' . $request->q . '%')->orWhere('nik', 'like', '%' . $request->q . '%')->get();
+
+        $formatted_tags = [];
+
+        foreach ($tags as $tag) {
+            $formatted_tags[] = ['id' => $tag->id, 'text' => $tag->nama . ' - ' . $tag->nik];
+        }
+
+        return response()->json($formatted_tags);
+    }
+    public function ShowPegawaiFromSelect2($id)
+    {
+        $pegawai = Pegawai::findOrFail($id);
+        return response()->json($pegawai);
+    }
+    public function GetAgamaPieChartData()
+    {
+        $agama = Agama::get();
+        $resource = [];
+        foreach ($agama as $data) {
+            array_push(
+                $resource,
+                [
+                    'label' => $data->nama,
+                    'data' => [
+                        [1, round($data->pegawais->count() / $data->count() * 100)]
+                    ],
+                    'color' => '#' . str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT)
+                ]
+            );
+        }
+        return response()->json($resource);
+    }
+    public function GetPerkawinanPieChartData()
+    {
+        $pernikahaan = StatusPernikahan::get();
+        $resource = [];
+        foreach ($pernikahaan as $data) {
+            array_push(
+                $resource,
+                [
+                    'label' => $data->nama,
+                    'data' => [
+                        [1, round($data->pegawais->count() / $data->count() * 100)]
+                    ],
+                    'color' => '#' . str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT)
+                ]
+            );
+        }
+        return response()->json($resource);
+    }
+    public function GetJenisKelaminMorris()
+    {
+        $laki = Pegawai::where('jenis_kelamin', 'Laki Laki')->get()->count();
+        $perempuan = Pegawai::where('jenis_kelamin', 'Prempuan')->get()->count();
+
+        $response = [
+            [
+
+                'y' => Carbon::now()->format('Y'),
+                'a' => $laki,
+                'b' => $perempuan
+            ]
+        ];
+        return response()->json($response);
     }
 }

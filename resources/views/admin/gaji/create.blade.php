@@ -27,11 +27,7 @@
                                         <th>Pegawai</th>
                                         <th>:</th>
                                         <th>
-                                            <select name="pegawai" class="form-control">
-                                                @foreach($pegawais as $pegawai)
-                                                <option value="{{ $pegawai->id }}">{{ $pegawai->nama }} - {{ $pegawai->nip }}</option>
-                                                @endforeach
-                                            </select>
+                                            <select name="pegawai" id="pegawai" class="form-control select2-ajax"></select>
                                         </th>
                                     </tr>
                                     <tr>
@@ -41,6 +37,17 @@
                                             <input name="tanggal" type="date" class="form-control" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}">
                                         </th>
                                     </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th>Pegawai</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablebody">
                                 </tbody>
                             </table>
                         </div>
@@ -154,6 +161,27 @@
         formatted = output.reverse().join("");
         return ("" + formatted + ((parts) ? "." + parts[1].substr(0, 2) : ""));
     };
+
+    $('#pegawai').on('change', function() {
+        $('#tablebody').html('')
+        $.ajax({
+            url: `/api//admin/findOrFail/${$(this).val()}`,
+            success: resource => {
+                console.log(resource)
+                let tbody = `<tr>
+                    <th>Nama</th>
+                    <th>:</th>
+                    <th>${resource.nama}</th>
+                </tr>
+                <tr>
+                    <th>NIK</th>
+                    <th>:</th>
+                    <th>${resource.nik}</th>
+                </tr>`
+                $('#tablebody').html(tbody)
+            }
+        })
+    });
     const rupiah = e => {
         $(e).val(formatter($(e).val()))
     }
@@ -182,7 +210,7 @@
         $('#total_penerimaan').val(formatter(total))
         WeCanSumSallary()
     }
-    
+
     $('.delete_confirm').click(function(event) {
         let form = $(this).closest("form");
         event.preventDefault();

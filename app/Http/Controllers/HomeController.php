@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Disposisi;
 use App\Models\FilePegawai;
 use App\Models\Pegawai;
+use App\Models\Pendidikan;
 use App\Models\SuratKeluar;
 use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
@@ -33,9 +34,10 @@ class HomeController extends Controller
             $surat_keluar = SuratKeluar::get()->count();
             $pegawai = Pegawai::get()->count();
             $dokumen = FilePegawai::get()->count();
-            
+            $pendidikan = Pendidikan::get();
             
             return view('home', [
+                'pendidikan' => $pendidikan,
                 'surat_masuk' => $surat_masuk,
                 'surat_keluar' => $surat_keluar,
                 'pegawai' => $pegawai,

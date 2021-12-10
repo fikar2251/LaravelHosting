@@ -35,4 +35,9 @@ class DocumentController extends Controller
             return response()->json($error->getMessage());
         }
     }
+    public function ShowDocument($id)
+    {
+        $resource = FilePegawai::findOrFail($id);
+        return response()->json($resource);
+    }
 }

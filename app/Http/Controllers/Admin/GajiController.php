@@ -182,6 +182,32 @@ class GajiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            //code...
+            RincianGaji::where('penggajian_id', $id)->delete();
+            Penggajian::findOrFail($id)->delete();
+            Alert::success('success');
+            return back();
+        } catch (\Throwable $th) {
+            //throw $th;
+            Alert::error($th->getMessage());
+            return back();
+        }
+    }
+    public function filter(Request $request)
+    {
+        $this->validate($request,[
+            'start' => 'required',
+            'end' => 'required'
+        ]);
+        return view('admin.gaji.index', [
+            'penggajians' => Penggajian::whereBetween('tanggal',[$request->start,$request->end])->get()
+        ]);
+    }
+    public function print($id)
+    {
+        return view('admin.gaji.print',[
+            'gaji' => Penggajian::findOrFail($id)
+        ]);
     }
 }
