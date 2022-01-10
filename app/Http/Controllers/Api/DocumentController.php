@@ -29,8 +29,10 @@ class DocumentController extends Controller
             $path = $file_pegawai->file;
             $file = Storage::get($path);
             $file_decrypt = decrypt($file);
+            
             Storage::put('decrypt/'.$file_pegawai->original, $file_decrypt);
-            return response()->download('storage/decrypt/'.$file_pegawai->original)->deleteFileAfterSend(true);
+            $path = 'decrypt/'.$file_pegawai->original;
+            return response()->json(asset('storage/'.$path));
         } catch (Exception $error) {
             return response()->json($error->getMessage());
         }

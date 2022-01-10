@@ -201,4 +201,14 @@ class RapatController extends Controller
             return back();
         }
     }
+    public function filter(Request $request)
+    {
+        $this->validate($request,[
+            'start' => 'required',
+            'end' => 'required'
+        ]);
+        return view('admin.rapat.index', [
+            'rapats' => Rapat::whereBetween('tanggal',[$request->start,$request->end])->get()
+        ]);
+    }
 }

@@ -99,6 +99,7 @@ Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function () {
     Route::get('gaji/print/{id}',[GajiController::class, 'print'])->name('gaji.print');
     Route::post('gaji/filter',[GajiController::class, 'filter'])->name('gaji.filter');
     Route::resource('gaji', GajiController::class);
+    Route::post('rapat/filter',[RapatController::class, 'filter'])->name('rapat.filter');
     Route::resource('rapat', RapatController::class);
     Route::post('absensi/laporan', [AdminAbsensiController::class, 'laporan'])->name('absensi.laporan');
     Route::resource('absensi', AdminAbsensiController::class);
