@@ -338,7 +338,7 @@ class PegawaiController extends Controller
                     'tipe' => 'tidak telat'
                 ]);
             }
-            return response()->json('anda tidak telat, semoga hari mu menyenangkan', 200);
+            return response()->json('absen sukses, anda tidak telat, selamat bekerja', 200);
         } else {
             if (Absensi::where('pegawai_id', $request->pegawai)->whereDate('tanggal', Carbon::now()->format('Y-m-d'))->exists()) {
                 Absensi::where('pegawai_id', $request->pegawai)->where('tanggal', Carbon::now()->format('Y-m-d'))->update([
@@ -355,7 +355,7 @@ class PegawaiController extends Controller
                     'tipe' => 'telat'
                 ]);
             }
-            return response()->json('anda telat, semoga hari mu suram', 200);
+            return response()->json('absen sukses, anda telat, selamat bekerja', 200);
         }
     }
     public function AbsenPulang(Request $request)
@@ -392,10 +392,10 @@ class PegawaiController extends Controller
                     'pegawai_id' => $request->pegawai
                 ]);
             }
-            return response()->json('anda boleh pulang', 200);
+            return response()->json('absen pulang sukses', 200);
         } else {
-            return response()->json('anda tidak boleh pulang', 500);
-        }
+            return response()->json('masih dalam jam kerja, tidak diizinkan pulang', 500);
+        } 
     }
     public function FindPegawaiFromSelect2(Request $request)
     {
